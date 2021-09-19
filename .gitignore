@@ -1,2 +1,2 @@
 #ignore config file
-config/db.go
+config/database.go
