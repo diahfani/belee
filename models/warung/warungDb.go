@@ -1,7 +1,7 @@
 package warung
 
 import (
-	"Documents/belee/models/products"
+	"final_project/belee/models/products"
 	"time"
 )
 
