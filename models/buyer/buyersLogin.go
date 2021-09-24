@@ -1,4 +1,4 @@
-package buyers
+package buyer
 
 type BuyersLogin struct {
 	Email    string `json:"email"`

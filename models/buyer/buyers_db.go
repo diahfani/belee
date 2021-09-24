@@ -1,4 +1,4 @@
-package buyers
+package buyer
 
 import (
 	"time"

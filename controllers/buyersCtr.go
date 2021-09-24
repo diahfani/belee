@@ -1,40 +1,44 @@
 package controllers
 
 import (
+	"belee/models/buyer"
 	"errors"
 	"final_project/belee/config"
 	"final_project/belee/models"
-	"final_project/belee/models/buyers"
+
+	// "belee/models/buyers"
 	"net/http"
-	"strconv"
+
+	"belee/middlewares"
+	// "belee/models/buyer"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
-func GetBuyersController(c echo.Context) error {
-	buyers := []buyers.Buyers{}
+// func GetBuyersController(c echo.Context) error {
+// 	buyers := []buyers.Buyers{}
 
-	result := config.DB.Find(&buyers)
+// 	result := config.DB.Find(&buyers)
 
-	if result.Error != nil {
-		if result.Error != gorm.ErrRecordNotFound {
-			return c.JSON(http.StatusInternalServerError, models.BaseResponse{
-				Code:    http.StatusInternalServerError,
-				Message: "Error input data",
-				Data:    nil,
-			})
-		}
-	}
-	return c.JSON(http.StatusOK, models.BaseResponse{
-		Code:    http.StatusOK,
-		Message: "Succeed",
-		Data:    buyers,
-	})
-}
+// 	if result.Error != nil {
+// 		if result.Error != gorm.ErrRecordNotFound {
+// 			return c.JSON(http.StatusInternalServerError, models.BaseResponse{
+// 				Code:    http.StatusInternalServerError,
+// 				Message: "Error input data",
+// 				Data:    nil,
+// 			})
+// 		}
+// 	}
+// 	return c.JSON(http.StatusOK, models.BaseResponse{
+// 		Code:    http.StatusOK,
+// 		Message: "Succeed",
+// 		Data:    buyers,
+// 	})
+// }
 
 func RegisterController(c echo.Context) error {
-	var buyersReg buyers.BuyersRegist
+	var buyersReg buyer.BuyersRegist
 	c.Bind(&buyersReg)
 	// emailExist := c.Param("email")
 
@@ -48,7 +52,7 @@ func RegisterController(c echo.Context) error {
 		})
 	}
 
-	var buyersData buyers.Buyers
+	var buyersData buyer.Buyers
 	buyersData.Name = buyersReg.Name
 	buyersData.Age = buyersReg.Age
 	buyersData.NoHp = buyersReg.NoHp
@@ -74,10 +78,10 @@ func RegisterController(c echo.Context) error {
 }
 
 func LoginController(c echo.Context) error {
-	buyersLogin := buyers.BuyersLogin{}
+	buyersLogin := buyer.BuyersLogin{}
 	c.Bind(&buyersLogin)
 
-	buyers := buyers.Buyers{}
+	buyers := buyer.Buyers{}
 
 	result := config.DB.First(&buyers, "email = ? AND password = ?", buyersLogin.Email, buyersLogin.Password)
 
@@ -96,25 +100,54 @@ func LoginController(c echo.Context) error {
 			})
 		}
 	}
-	return c.JSON(http.StatusOK, models.BaseResponse{
-		Code:    http.StatusOK,
-		Message: "Succeed",
-		Data:    buyersLogin,
-	})
-}
 
-func DetailsBuyers(c echo.Context) error {
-	buyersId, err := strconv.Atoi(c.Param("buyersId"))
+	token, err := middlewares.CreateToken(buyers.Id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 			Code:    http.StatusInternalServerError,
-			Message: "failed",
+			Message: "there's mistake in server",
 			Data:    nil,
 		})
 	}
+
+	buyersJwt := buyer.BuyersResponse{
+		Id:      buyers.Id,
+		Name:    buyers.Name,
+		Age:     buyers.Age,
+		NoHp:    buyers.NoHp,
+		Dob:     buyers.Dob,
+		Address: buyers.Address,
+		Email:   buyers.Email,
+		Token:   token,
+	}
+	// buyersJwt := {
+	// 	Id: buyers.Id,
+	// 	Name: buyers.Name,
+	// 	Age: buyers.Age,
+	// 	NoHp : buyers.NoHp,
+	// 	Dob: buyers.Dob,
+
+	// }
+
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "succeed",
-		Data:    buyers.Buyers{Id: buyersId},
+		Message: "Succeed",
+		Data:    buyersJwt,
 	})
 }
+
+// func DetailsBuyers(c echo.Context) error {
+// 	buyersId, err := strconv.Atoi(c.Param("buyersId"))
+// 	if err != nil {
+// 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
+// 			Code:    http.StatusInternalServerError,
+// 			Message: "failed",
+// 			Data:    nil,
+// 		})
+// 	}
+// 	return c.JSON(http.StatusOK, models.BaseResponse{
+// 		Code:    http.StatusOK,
+// 		Message: "succeed",
+// 		Data:    buyers.Buyers{Id: buyersId},
+// 	})
+// }

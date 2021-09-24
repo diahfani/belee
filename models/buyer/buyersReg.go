@@ -1,4 +1,4 @@
-package buyers
+package buyer
 
 type BuyersRegist struct {
 	Name     string `json:"name"`

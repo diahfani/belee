@@ -1,14 +1,19 @@
 package routes
 
 import (
+	// "belee/middlewares"
+	// "belee/middlewares"
 	"final_project/belee/controllers"
 
 	"github.com/labstack/echo/v4"
+	// "github.com/labstack/echo/v4/middleware"
 )
 
 func NewRoutes() *echo.Echo {
 	e := echo.New()
 	// ev1 := e.Group("api/v1/")
+
+	// e.Pre(middleware.RemoveTrailingSlash())
 
 	//buyers
 	buyers := e.Group("api/v1/buyers")
