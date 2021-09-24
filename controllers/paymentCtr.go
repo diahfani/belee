@@ -1,19 +1,19 @@
 package controllers
 
 import (
+	"belee/config"
 	"belee/models"
-	"belee/models/productsType"
-	"final_project/belee/config"
+	"belee/models/paymentMethod"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
-func AddProductType(c echo.Context) error {
-	var addProductType productsType.AddType
-	c.Bind(&addProductType)
+func AddPayment(c echo.Context) error {
+	var addPayment paymentMethod.AddPayment
+	c.Bind(&addPayment)
 
-	if addProductType.NameType == "" {
+	if addPayment.PaymentName == "" {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "Name empty",
@@ -21,10 +21,10 @@ func AddProductType(c echo.Context) error {
 		})
 	}
 
-	var productsType productsType.ProductsType
-	productsType.NameType = addProductType.NameType
+	var paymentmethod paymentMethod.PaymentMethods
+	paymentmethod.PaymentName = addPayment.PaymentName
 
-	result := config.DB.Create(&productsType)
+	result := config.DB.Create(&paymentmethod)
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 			Code:    http.StatusInternalServerError,
@@ -34,7 +34,8 @@ func AddProductType(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "success add products type",
-		Data:    (&productsType),
+		Message: "success add payment method",
+		Data:    (&paymentmethod),
 	})
+
 }
