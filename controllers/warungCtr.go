@@ -22,9 +22,9 @@ func AddWarung(c echo.Context) error {
 	}
 
 	var warungdata warung.Warungs
+	warungdata.OwnersID = addwarungs.OwnersID
 	warungdata.Name = addwarungs.Name
 	warungdata.Address = addwarungs.Address
-	warungdata.OwnersID = addwarungs.OwnersID
 	warungdata.OwnersName = addwarungs.OwnersName
 
 	result := config.DB.Create(&warungdata)

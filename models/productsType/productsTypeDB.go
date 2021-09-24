@@ -1,10 +1,9 @@
 package productsType
 
-type ProductsType struct {
-	Id       int    `json:"id" gorm:"primaryKey"`
-	NameType string `json:"nametype"`
-}
+import "time"
 
-type AddType struct {
-	NameType string `json:"nametype"`
+type ProductsType struct {
+	Id        int       `json:"id" gorm:"primaryKey"`
+	NameType  string    `json:"nametype"`
+	CreatedAt time.Time `json:"createdAt"`
 }

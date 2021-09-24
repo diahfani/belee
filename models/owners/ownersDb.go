@@ -7,7 +7,7 @@ import (
 
 type Owners struct {
 	Id        int              `gorm:"primaryKey" json:"id"`
-	WarungID  []warung.Warungs `gorm:"foreignKey:OwnersID; OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	WarungID  []warung.Warungs `gorm:"foreignKey:OwnersID"`
 	Name      string           `json:"name" gorm:"not null"`
 	Age       string           `json:"age" gorm:"not null"`
 	NoHp      string           `json:"nohp" gorm:"not null"`
