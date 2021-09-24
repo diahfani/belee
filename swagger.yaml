@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: CONSIGNKU-BE
-  description: This is documentation about CONSIGNKU Backend.
+  title: Belee
+  description: Belee API Documentation
   version: 1.0.
 
 tags:
