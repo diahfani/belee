@@ -2,7 +2,7 @@ package buyers
 
 import (
 	"context"
-	"final_project/belee/belee/business/buyers"
+	"final_project/belee/business/buyers"
 
 	"gorm.io/gorm"
 )

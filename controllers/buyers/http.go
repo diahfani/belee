@@ -5,10 +5,10 @@ import (
 	// "final_project/belee/belee/business/buyers"
 	// "final_project/belee/belee/controllers"
 
-	"final_project/belee/belee/business/buyers"
-	"final_project/belee/belee/controllers"
-	"final_project/belee/belee/controllers/buyers/request"
-	"final_project/belee/belee/controllers/buyers/responses"
+	"final_project/belee/business/buyers"
+	"final_project/belee/controllers"
+	"final_project/belee/controllers/buyers/request"
+	"final_project/belee/controllers/buyers/responses"
 	"fmt"
 	"net/http"
 
@@ -34,7 +34,7 @@ func (ctr BuyerController) Login(c echo.Context) error {
 	buyer, err := ctr.BuyerUsecase.Login(buyersLogin.Email, buyersLogin.Password, ctx)
 
 	if err != nil {
-		controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 		// NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 

@@ -1,7 +1,7 @@
 package responses
 
 import (
-	"final_project/belee/belee/business/buyers"
+	"final_project/belee/business/buyers"
 	"time"
 )
 
