@@ -28,7 +28,7 @@ func NewBuyerUsecase(repo Repository, timeOut time.Duration) Usecase {
 //validasi ada di controllers (disarankan)
 //untuk handlers (bagian depan) itu untuk mem-binding
 
-func (uc *BuyerUsecase) Login(email string, password string, ctx context.Context) (Domain, error) {
+func (uc *BuyerUsecase) Login(ctx context.Context, email string, password string) (Domain, error) {
 	if email == "" {
 		return Domain{}, errors.New("Email Empty")
 	}
@@ -37,7 +37,7 @@ func (uc *BuyerUsecase) Login(email string, password string, ctx context.Context
 		return Domain{}, errors.New("Password Empty")
 	}
 
-	buyer, err := uc.Login(email, password, ctx)
+	buyer, err := uc.Login(ctx, email, password)
 
 	if err != nil {
 		return Domain{}, err

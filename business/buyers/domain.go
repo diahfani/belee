@@ -24,10 +24,10 @@ type Domain struct {
 //interface adalah list2 function yang menempel di sebuah struct yang akan digunakan usecase untuk domain
 
 type Usecase interface {
-	Login(email string, password string, ctx context.Context) (Domain, error)
+	Login(ctx context.Context, email string, password string) (Domain, error)
 }
 
 //interface yang digunakan untuk mengakses database/drivers
 type Repository interface {
-	Login(email string, password string, ctx context.Context) (Domain, error)
+	Login(ctx context.Context, email string, password string) (Domain, error)
 }
