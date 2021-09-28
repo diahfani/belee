@@ -7,8 +7,11 @@ import (
 
 	"final_project/belee/business/buyers"
 	"final_project/belee/controllers"
+	_baseresponse "final_project/belee/controllers"
 	"final_project/belee/controllers/buyers/request"
 	"final_project/belee/controllers/buyers/responses"
+
+	// "final_project/belee/drivers/databases/buyers"
 	"fmt"
 	"net/http"
 
@@ -31,7 +34,7 @@ func (ctr BuyerController) Login(c echo.Context) error {
 	c.Bind(&buyersLogin)
 
 	ctx := c.Request().Context()
-	buyer, err := ctr.BuyerUsecase.Login(buyersLogin.Email, buyersLogin.Password, ctx)
+	buyer, err := ctr.BuyerUsecase.Login(ctx, buyersLogin.Email, buyersLogin.Password)
 
 	if err != nil {
 		controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
@@ -40,4 +43,21 @@ func (ctr BuyerController) Login(c echo.Context) error {
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(buyer))
 	// return .NewSuccessResponse(c, responses.FromDomain(buyer))
+}
+
+func (ctr BuyerController) Register(c echo.Context) error {
+	ctx := c.Request().Context()
+	req := request.BuyersRegist{}
+	// req := buyers.Buyers{}
+	if err := c.Bind(&req); err != nil {
+		return _baseresponse.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	// reqDomain := req.ToDomain()
+	err := ctr.BuyerUsecase.Register(ctx, req.ToDomain())
+	if err != nil {
+		return _baseresponse.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	return _baseresponse.NewSuccessResponse(c, "success")
 }

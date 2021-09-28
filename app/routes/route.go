@@ -12,4 +12,5 @@ type ControllerList struct {
 
 func (c1 *ControllerList) RouteRegister(e *echo.Echo) {
 	e.POST("buyers/login", c1.BuyerController.Login)
+	e.POST("buyers/register", c1.BuyerController.Register)
 }
