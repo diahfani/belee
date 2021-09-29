@@ -1,6 +1,7 @@
 package routes
 
 import (
+	paymentmethod "belee/controllers/paymentMethod"
 	"final_project/belee/app/middleware"
 	"final_project/belee/controllers/buyers"
 	"final_project/belee/controllers/owners"
@@ -9,9 +10,10 @@ import (
 )
 
 type ControllerList struct {
-	JWTmiddleware   middleware.ConfigJwt
-	BuyerController buyers.BuyerController
-	OwnerController owners.OwnerController
+	JWTmiddleware     middleware.ConfigJwt
+	BuyerController   buyers.BuyerController
+	OwnerController   owners.OwnerController
+	PaymentController paymentmethod.PaymentController
 }
 
 func (c1 *ControllerList) RouteRegister(e *echo.Echo) {
@@ -24,5 +26,11 @@ func (c1 *ControllerList) RouteRegister(e *echo.Echo) {
 	e.POST("owners/register", c1.OwnerController.Register)
 
 	//products
+	// e.GET("products", c1.ProductsController.Get)
+
+	//payment
+	e.POST("payment/add", c1.PaymentController.Add)
+	e.GET("payment", c1.PaymentController.FindAll)
+	//warungs
 
 }

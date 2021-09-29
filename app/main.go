@@ -3,6 +3,7 @@ package main
 import (
 	_middleware "belee/app/middleware"
 	// _middleware "final_project/belee/app/middleware"
+	// _paymentRepository "belee/drivers/databases/paymentMethod"
 	"final_project/belee/app/routes"
 	_buyerUsecase "final_project/belee/business/buyers"
 	_ownerUsecase "final_project/belee/business/owners"
@@ -13,6 +14,8 @@ import (
 	_mysqlDriver "final_project/belee/drivers/databases/mysql"
 	_ownerRepository "final_project/belee/drivers/databases/owners"
 	_ownersdb "final_project/belee/drivers/databases/owners"
+	_paymentdb "final_project/belee/drivers/databases/paymentMethod"
+
 	"log"
 	"time"
 
@@ -40,7 +43,7 @@ func init() {
 // }
 
 func DbMigrate(db *gorm.DB) {
-	db.AutoMigrate(&_buyersdb.Buyers{}, &_ownersdb.Owners{})
+	db.AutoMigrate(&_buyersdb.Buyers{}, &_ownersdb.Owners{}, &_paymentdb.PaymentMethod{})
 
 }
 
@@ -73,6 +76,8 @@ func main() {
 	ownerRepository := _ownerRepository.NewMysqlOwnerRepository(Conn)
 	ownerUsecase := _ownerUsecase.NewOwnerUsecase(ownerRepository, &configjwt, timeoutContext)
 	ownerController := _ownerController.NewOwnerController(ownerUsecase)
+
+	// paymentRepository := _paymentRepository.MysqlPaymentRepository(Conn)
 
 	routesInit := routes.ControllerList{
 		// JWTmiddleware:   configjwt.Init(),

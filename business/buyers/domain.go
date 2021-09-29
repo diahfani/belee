@@ -25,7 +25,7 @@ type Domain struct {
 
 type Usecase interface {
 	Login(ctx context.Context, data Domain) (Domain, string, error)
-	Register(ctx context.Context, data Domain) (Domain, string, error)
+	Register(ctx context.Context, data Domain) (Domain, error)
 }
 
 //interface yang digunakan untuk mengakses database/drivers
