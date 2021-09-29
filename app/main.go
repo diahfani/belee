@@ -1,18 +1,26 @@
 package main
 
 import (
+	_middleware "belee/app/middleware"
+	// _middleware "final_project/belee/app/middleware"
 	"final_project/belee/app/routes"
 	_buyerUsecase "final_project/belee/business/buyers"
+	_ownerUsecase "final_project/belee/business/owners"
 	_buyerController "final_project/belee/controllers/buyers"
+	_ownerController "final_project/belee/controllers/owners"
 	_buyerRepository "final_project/belee/drivers/databases/buyers"
 	_buyersdb "final_project/belee/drivers/databases/buyers"
 	_mysqlDriver "final_project/belee/drivers/databases/mysql"
+	_ownerRepository "final_project/belee/drivers/databases/owners"
+	_ownersdb "final_project/belee/drivers/databases/owners"
 	"log"
 	"time"
 
+	// "final_project/belee/app/middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
+	// "github.com/labstack/echo/v4/middleware"
 )
 
 //fetch config.json
@@ -27,8 +35,13 @@ func init() {
 	}
 }
 
+// type Buyer struct {
+// 	Role string
+// }
+
 func DbMigrate(db *gorm.DB) {
-	db.AutoMigrate(&_buyersdb.Buyers{})
+	db.AutoMigrate(&_buyersdb.Buyers{}, &_ownersdb.Owners{})
+
 }
 
 func main() {
@@ -45,15 +58,26 @@ func main() {
 
 	DbMigrate(Conn)
 
+	configjwt := _middleware.ConfigJwt{
+		SecretJwt:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+
 	e := echo.New()
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	buyerRepository := _buyerRepository.NewMysqlBuyerRepository(Conn)
-	buyerUsecase := _buyerUsecase.NewBuyerUsecase(buyerRepository, timeoutContext)
+	buyerUsecase := _buyerUsecase.NewBuyerUsecase(buyerRepository, &configjwt, timeoutContext)
 	buyerController := _buyerController.NewBuyerController(buyerUsecase)
 
+	ownerRepository := _ownerRepository.NewMysqlOwnerRepository(Conn)
+	ownerUsecase := _ownerUsecase.NewOwnerUsecase(ownerRepository, &configjwt, timeoutContext)
+	ownerController := _ownerController.NewOwnerController(ownerUsecase)
+
 	routesInit := routes.ControllerList{
+		// JWTmiddleware:   configjwt.Init(),
 		BuyerController: *buyerController,
+		OwnerController: *ownerController,
 	}
 
 	routesInit.RouteRegister(e)

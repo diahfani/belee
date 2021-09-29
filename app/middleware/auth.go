@@ -1,8 +1,6 @@
 package middleware
 
 import (
-	"belee/business"
-	"final_project/belee/controllers"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -11,8 +9,7 @@ import (
 )
 
 type JwtCustomClaims struct {
-	Id   int    `json:"id"`
-	Role string `json:"role"`
+	Id int `json:"id"`
 	jwt.StandardClaims
 }
 
@@ -28,18 +25,17 @@ func (jwtconf *ConfigJwt) Init() middleware.JWTConfig {
 	}
 }
 
-func (jwtconf *ConfigJwt) GenerateToken(BuyerId int, Role string) string {
+func (jwtconf *ConfigJwt) GenerateToken(BuyerId int) (string, error) {
 	claims := JwtCustomClaims{
 		BuyerId,
-		Role,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(int64(jwtconf.ExpiresDuration))).Unix(),
 		},
 	}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, _ := t.SignedString([]byte(jwtconf.SecretJwt))
-	return token
+	token, err := t.SignedString([]byte(jwtconf.SecretJwt))
+	return token, err
 }
 
 func GetUser(c echo.Context) *JwtCustomClaims {
@@ -48,16 +44,16 @@ func GetUser(c echo.Context) *JwtCustomClaims {
 	return claims
 }
 
-func RoleValidation(role string) echo.MiddlewareFunc {
-	return func(hf echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			claims := GetUser(c)
+// func RoleValidation(role string) echo.MiddlewareFunc {
+// 	return func(hf echo.HandlerFunc) echo.HandlerFunc {
+// 		return func(c echo.Context) error {
+// 			claims := GetUser(c)
 
-			if claims.Role == role {
-				return hf(c)
-			} else {
-				return controllers.NewErrorResponse(c, business.ErrForbiddenRoles)
-			}
-		}
-	}
-}
+// 			if claims.Role == role {
+// 				return hf(c)
+// 			} else {
+// 				return controllers.NewErrorResponse(c, business.ErrForbiddenRoles)
+// 			}
+// 		}
+// 	}
+// }
