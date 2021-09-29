@@ -4,6 +4,11 @@ import (
 	_middleware "belee/app/middleware"
 	// _middleware "final_project/belee/app/middleware"
 	// _paymentRepository "belee/drivers/databases/paymentMethod"
+	_paymentUsecase "belee/business/paymentMethod"
+	_paymentController "belee/controllers/paymentMethod"
+	_paymentRepository "belee/drivers/databases/paymentMethod"
+
+	// "final_project/belee/app/middleware"
 	"final_project/belee/app/routes"
 	_buyerUsecase "final_project/belee/business/buyers"
 	_ownerUsecase "final_project/belee/business/owners"
@@ -61,8 +66,8 @@ func main() {
 
 	DbMigrate(Conn)
 
-	configjwt := _middleware.ConfigJwt{
-		SecretJwt:       viper.GetString(`jwt.secret`),
+	configjwt := _middleware.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
 		ExpiresDuration: viper.GetInt(`jwt.expired`),
 	}
 
@@ -77,12 +82,15 @@ func main() {
 	ownerUsecase := _ownerUsecase.NewOwnerUsecase(ownerRepository, &configjwt, timeoutContext)
 	ownerController := _ownerController.NewOwnerController(ownerUsecase)
 
-	// paymentRepository := _paymentRepository.MysqlPaymentRepository(Conn)
+	paymentRepository := _paymentRepository.NewMysqlPaymentRepo(Conn)
+	paymentUsecase := _paymentUsecase.NewPaymentUsecase(paymentRepository, timeoutContext)
+	paymentController := _paymentController.NewPaymentController(paymentUsecase)
 
 	routesInit := routes.ControllerList{
-		// JWTmiddleware:   configjwt.Init(),
-		BuyerController: *buyerController,
-		OwnerController: *ownerController,
+		// Jwtconfig:     ,
+		BuyerController:   *buyerController,
+		OwnerController:   *ownerController,
+		PaymentController: *paymentController,
 	}
 
 	routesInit.RouteRegister(e)

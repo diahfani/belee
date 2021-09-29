@@ -10,7 +10,7 @@ import (
 )
 
 type ControllerList struct {
-	JWTmiddleware     middleware.ConfigJwt
+	Jwtconfig         middleware.ConfigJWT
 	BuyerController   buyers.BuyerController
 	OwnerController   owners.OwnerController
 	PaymentController paymentmethod.PaymentController

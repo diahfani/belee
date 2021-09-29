@@ -15,12 +15,12 @@ import (
 type BuyerUsecase struct {
 	Repo           Repository
 	contextTimeout time.Duration
-	jwtAuth        *middleware.ConfigJwt
+	jwtAuth        *middleware.ConfigJWT
 }
 
 //responsenya adalah interface usecase
 //interface usecase akan dipasangkan dgn controllers
-func NewBuyerUsecase(repo Repository, jwtAuth *middleware.ConfigJwt, timeout time.Duration) Usecase {
+func NewBuyerUsecase(repo Repository, jwtAuth *middleware.ConfigJWT, timeout time.Duration) Usecase {
 	return &BuyerUsecase{
 		Repo:           repo,
 		jwtAuth:        jwtAuth,

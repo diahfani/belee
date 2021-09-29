@@ -11,12 +11,12 @@ import (
 type OwnerUsecase struct {
 	Repo           Repository
 	contextTimeout time.Duration
-	jwtAuth        *middleware.ConfigJwt
+	jwtAuth        *middleware.ConfigJWT
 }
 
 //responsenya adalah interface usecase
 //interface usecase akan dipasangkan dgn controllers
-func NewOwnerUsecase(repo Repository, jwtAuth *middleware.ConfigJwt, timeout time.Duration) Usecase {
+func NewOwnerUsecase(repo Repository, jwtAuth *middleware.ConfigJWT, timeout time.Duration) Usecase {
 	return &OwnerUsecase{
 		Repo:           repo,
 		jwtAuth:        jwtAuth,

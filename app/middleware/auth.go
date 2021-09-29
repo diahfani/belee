@@ -13,19 +13,19 @@ type JwtCustomClaims struct {
 	jwt.StandardClaims
 }
 
-type ConfigJwt struct {
-	SecretJwt       string
+type ConfigJWT struct {
+	SecretJWT       string
 	ExpiresDuration int
 }
 
-func (jwtconf *ConfigJwt) Init() middleware.JWTConfig {
+func (jwtconf *ConfigJWT) Init() middleware.JWTConfig {
 	return middleware.JWTConfig{
 		Claims:     &JwtCustomClaims{},
-		SigningKey: []byte(jwtconf.SecretJwt),
+		SigningKey: []byte(jwtconf.SecretJWT),
 	}
 }
 
-func (jwtconf *ConfigJwt) GenerateToken(BuyerId int) (string, error) {
+func (jwtconf *ConfigJWT) GenerateToken(BuyerId int) (string, error) {
 	claims := JwtCustomClaims{
 		BuyerId,
 		jwt.StandardClaims{
@@ -34,7 +34,7 @@ func (jwtconf *ConfigJwt) GenerateToken(BuyerId int) (string, error) {
 	}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := t.SignedString([]byte(jwtconf.SecretJwt))
+	token, err := t.SignedString([]byte(jwtconf.SecretJWT))
 	return token, err
 }
 
