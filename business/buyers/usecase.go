@@ -7,7 +7,6 @@ package buyers
 import (
 	"belee/app/middleware"
 	"context"
-	"errors"
 	"final_project/belee/business"
 	"strings"
 	"time"
@@ -21,10 +20,10 @@ type BuyerUsecase struct {
 
 //responsenya adalah interface usecase
 //interface usecase akan dipasangkan dgn controllers
-func NewBuyerUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewBuyerUsecase(repo Repository, jwtAuth *middleware.ConfigJwt, timeout time.Duration) Usecase {
 	return &BuyerUsecase{
-		ConfigJwt:      middleware.ConfigJwt,
 		Repo:           repo,
+		jwtAuth:        jwtAuth,
 		contextTimeout: timeout,
 	}
 }
@@ -33,34 +32,37 @@ func NewBuyerUsecase(repo Repository, timeout time.Duration) Usecase {
 //validasi ada di controllers (disarankan)
 //untuk handlers (bagian depan) itu untuk mem-binding
 
-func (uc *BuyerUsecase) Login(ctx context.Context, buyerDomain Domain) (Domain, error) {
+func (uc *BuyerUsecase) Login(ctx context.Context, buyerDomain Domain) (Domain, string, error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
 	if buyerDomain.Email == "" {
-		return Domain{}, errors.New("Email Empty")
+		return Domain{}, "", business.ErrPhonePasswordNotFound
 	}
 
 	if buyerDomain.Password == "" {
-		return Domain{}, errors.New("Password Empty")
+		return Domain{}, "", business.ErrPhonePasswordNotFound
 	}
 
 	buyer, err := uc.Repo.Login(ctx, buyerDomain.Email, buyerDomain.Password)
 
 	if err != nil {
-		return Domain{}, err
+		return Domain{}, "", business.ErrInvalidCredential
 	}
 
-	// token := uc.
-	return buyer, nil
+	token, err := uc.jwtAuth.GenerateToken(buyer.Id)
+	if err != nil {
+		return Domain{}, "", err
+	}
+	return buyer, token, nil
 
 }
 
-func (uc *BuyerUsecase) Register(ctx context.Context, buyerDomain *Domain) (Domain, string, error) {
+func (uc *BuyerUsecase) Register(ctx context.Context, data Domain) (Domain, string, error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
-	existedBuyer, err := uc.Repo.GetByEmail(ctx, buyerDomain.Email)
+	existedBuyer, err := uc.Repo.GetByEmail(ctx, data.Email)
 	if err != nil {
 		if !strings.Contains(err.Error(), "not found") {
 			return Domain{}, "", err
@@ -70,12 +72,17 @@ func (uc *BuyerUsecase) Register(ctx context.Context, buyerDomain *Domain) (Doma
 		return Domain{}, "", business.ErrDuplicateData
 	}
 
-	buyer, err := uc.Repo.Store(ctx, buyerDomain)
+	buyer, err := uc.Repo.Store(ctx, data)
 	if err != nil {
 		return Domain{}, "", err
 	}
 
-	return buyer, "", nil
+	token, err := uc.jwtAuth.GenerateToken(buyer.Id)
+	if err != nil {
+		return Domain{}, "", err
+	}
+
+	return buyer, token, nil
 
 	// err = uc.Repo.Register(ctx, buyerDomain)
 	// if err != nil {

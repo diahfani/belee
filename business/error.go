@@ -17,7 +17,7 @@ var (
 
 	ErrDuplicateData = errors.New("duplicate data")
 
-	ErrPhonePasswordNotFound = errors.New("(Phone) or (Password) empty")
+	ErrPhonePasswordNotFound = errors.New("(Email) or (Password) empty")
 
 	ErrInvalidCredential = errors.New("invalid credential")
 

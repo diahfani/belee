@@ -17,7 +17,6 @@ type Domain struct {
 	Email     string
 	Password  string
 	Token     string
-	Role      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -25,7 +24,7 @@ type Domain struct {
 //interface adalah list2 function yang menempel di sebuah struct yang akan digunakan usecase untuk domain
 
 type Usecase interface {
-	Login(ctx context.Context, data Domain) (Domain, error)
+	Login(ctx context.Context, data Domain) (Domain, string, error)
 	Register(ctx context.Context, data Domain) (Domain, string, error)
 }
 

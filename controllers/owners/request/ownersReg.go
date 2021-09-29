@@ -1,8 +1,8 @@
 package request
 
-import "final_project/belee/business/buyers"
+import "final_project/belee/business/owners"
 
-type BuyersRegist struct {
+type OwnersRegist struct {
 	Name     string `json:"name"`
 	Age      string `json:"age"`
 	NoHp     string `json:"nohp"`
@@ -12,8 +12,8 @@ type BuyersRegist struct {
 	Password string `json:"password"`
 }
 
-func (req BuyersRegist) ToDomain() *buyers.Domain {
-	return &buyers.Domain{
+func (req OwnersRegist) ToDomain() *owners.Domain {
+	return &owners.Domain{
 		Name:     req.Name,
 		Age:      req.Age,
 		NoHp:     req.NoHp,

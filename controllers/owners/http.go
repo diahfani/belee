@@ -1,45 +1,45 @@
 // controllers sebagai gerbang
-package buyers
+package owners
 
 import (
 	// "final_project/belee/belee/business/buyers"
 	// "final_project/belee/belee/controllers"
 
-	"final_project/belee/business/buyers"
+	"final_project/belee/business/owners"
 	"final_project/belee/controllers"
 	_baseresponse "final_project/belee/controllers"
-	"final_project/belee/controllers/buyers/request"
-	"final_project/belee/controllers/buyers/responses"
+	"final_project/belee/controllers/owners/request"
+	"final_project/belee/controllers/owners/responses"
 
 	// "final_project/belee/drivers/databases/buyers"
 
 	"github.com/labstack/echo/v4"
 )
 
-type BuyerController struct {
-	BuyerUsecase buyers.Usecase
+type OwnerController struct {
+	OwnerUsecase owners.Usecase
 }
 
-func NewBuyerController(buyerUsecase buyers.Usecase) *BuyerController {
-	return &BuyerController{
-		BuyerUsecase: buyerUsecase,
+func NewOwnerController(ownerUsecase owners.Usecase) *OwnerController {
+	return &OwnerController{
+		OwnerUsecase: ownerUsecase,
 	}
 }
 
-func (ctr BuyerController) Login(c echo.Context) error {
+func (ctr OwnerController) Login(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	req := request.BuyersLogin{}
+	req := request.OwnersLogin{}
 	if err := c.Bind(&req); err != nil {
 		return controllers.NewErrorResponse(c, err)
 	}
 
-	buyer, token, err := ctr.BuyerUsecase.Login(ctx, *req.ToDomain())
+	owner, token, err := ctr.OwnerUsecase.Login(ctx, *req.ToDomain())
 	if err != nil {
 		return controllers.NewErrorResponse(c, err)
 	}
 
-	response := responses.GetAuthResp(buyer, token)
+	response := responses.GetAuthResp(owner, token)
 	return controllers.NewSuccessResponse(c, response)
 
 	// fmt.Println("Login")
@@ -58,19 +58,19 @@ func (ctr BuyerController) Login(c echo.Context) error {
 	// // return .NewSuccessResponse(c, responses.FromDomain(buyer))
 }
 
-func (ctr BuyerController) Register(c echo.Context) error {
+func (ctr OwnerController) Register(c echo.Context) error {
 	ctx := c.Request().Context()
-	req := request.BuyersRegist{}
+	req := request.OwnersRegist{}
 	// req := buyers.Buyers{}
 	if err := c.Bind(&req); err != nil {
 		return _baseresponse.NewErrorResponse(c, err)
 	}
 
 	// reqDomain := req.ToDomain()
-	buyer, token, err := ctr.BuyerUsecase.Register(ctx, *req.ToDomain())
+	owner, token, err := ctr.OwnerUsecase.Register(ctx, *req.ToDomain())
 	if err != nil {
 		return _baseresponse.NewErrorResponse(c, err)
 	}
-	response := responses.GetAuthResp(buyer, token)
+	response := responses.GetAuthResp(owner, token)
 	return _baseresponse.NewSuccessResponse(c, response)
 }
