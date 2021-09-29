@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"belee/middlewares"
 	"errors"
 	"final_project/belee/config"
 	"final_project/belee/models"
-	"final_project/belee/models/owners"
+	"final_project/belee/models/owner"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -33,7 +34,7 @@ import (
 // }
 
 func OwnersRegisterController(c echo.Context) error {
-	var ownersReg owners.OwnersRegist
+	var ownersReg owner.OwnersRegist
 	c.Bind(&ownersReg)
 	// emailExist := c.Param("email")
 
@@ -47,7 +48,7 @@ func OwnersRegisterController(c echo.Context) error {
 		})
 	}
 
-	var ownersData owners.Owners
+	var ownersData owner.Owners
 	ownersData.Name = ownersReg.Name
 	ownersData.Age = ownersReg.Age
 	ownersData.NoHp = ownersReg.NoHp
@@ -73,10 +74,10 @@ func OwnersRegisterController(c echo.Context) error {
 }
 
 func OwnersLoginController(c echo.Context) error {
-	ownersLogin := owners.OwnersLogin{}
+	ownersLogin := owner.OwnersLogin{}
 	c.Bind(&ownersLogin)
 
-	owners := owners.Owners{}
+	owners := owner.Owners{}
 
 	result := config.DB.First(&owners, "email = ? AND password = ?", ownersLogin.Email, ownersLogin.Password)
 
@@ -96,11 +97,32 @@ func OwnersLoginController(c echo.Context) error {
 		}
 	}
 
+	token, err := middlewares.CreateToken(owners.Id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "there's mistake in server",
+			Data:    nil,
+		})
+	}
+
+	ownersJwt := owner.OwnersResponse{
+		Id:      owners.Id,
+		Name:    owners.Name,
+		Age:     owners.Age,
+		NoHp:    owners.NoHp,
+		Dob:     owners.Dob,
+		Address: owners.Address,
+		Email:   owners.Email,
+		Token:   token,
+	}
+
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "Succeed",
-		Data:    ownersLogin,
+		Data:    ownersJwt,
 	})
+
 }
 
 // func DetailsOwners(c echo.Context) error {

@@ -13,7 +13,7 @@ func AddPayment(c echo.Context) error {
 	var addPayment paymentMethod.AddPayment
 	c.Bind(&addPayment)
 
-	if addPayment.PaymentName == "" {
+	if addPayment.Name == "" {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "Name empty",
@@ -22,7 +22,7 @@ func AddPayment(c echo.Context) error {
 	}
 
 	var paymentmethod paymentMethod.PaymentMethods
-	paymentmethod.PaymentName = addPayment.PaymentName
+	paymentmethod.Name = addPayment.Name
 
 	result := config.DB.Create(&paymentmethod)
 	if result.Error != nil {

@@ -1,5 +1,5 @@
 package paymentMethod
 
 type AddPayment struct {
-	PaymentName string `json:"paymentname"`
+	Name string `json:"name"`
 }

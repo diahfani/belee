@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"belee/constants"
+	"belee/constant"
 	"errors"
 	"fmt"
 
@@ -29,7 +29,7 @@ func CreateToken(id int) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, err := token.SignedString([]byte(constants.SECRET_JWT))
+	t, err := token.SignedString([]byte(constant.SECRET_JWT))
 
 	if err != nil {
 		return "", err
