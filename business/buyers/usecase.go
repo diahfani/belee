@@ -58,23 +58,23 @@ func (uc *BuyerUsecase) Login(ctx context.Context, buyerDomain Domain) (Domain, 
 
 }
 
-func (uc *BuyerUsecase) Register(ctx context.Context, data Domain) (Domain, error) {
+func (uc *BuyerUsecase) Register(ctx context.Context, data Domain) (Domain, string, error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
 	existedBuyer, err := uc.Repo.GetByEmail(ctx, data.Email)
 	if err != nil {
 		if !strings.Contains(err.Error(), "not found") {
-			return Domain{}, err
+			return Domain{}, "", err
 		}
 	}
 	if existedBuyer != (Domain{}) {
-		return Domain{}, business.ErrDuplicateData
+		return Domain{}, "", business.ErrDuplicateData
 	}
 
 	buyer, err := uc.Repo.Store(ctx, data)
 	if err != nil {
-		return Domain{}, err
+		return Domain{}, "", err
 	}
 
 	// token, err := uc.jwtAuth.GenerateToken(buyer.Id)
@@ -82,7 +82,7 @@ func (uc *BuyerUsecase) Register(ctx context.Context, data Domain) (Domain, erro
 	// 	return Domain{}, err
 	// }
 
-	return buyer, nil
+	return buyer, "", nil
 
 	// err = uc.Repo.Register(ctx, buyerDomain)
 	// if err != nil {

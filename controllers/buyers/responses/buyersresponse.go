@@ -20,13 +20,15 @@ type BuyersResponse struct {
 
 func FromDomain(domain buyers.Domain) BuyersResponse {
 	return BuyersResponse{
-		Id:      domain.Id,
-		Name:    domain.Name,
-		Age:     domain.Age,
-		NoHp:    domain.NoHp,
-		Dob:     domain.Dob,
-		Address: domain.Address,
-		Email:   domain.Email,
-		Token:   domain.Token,
+		Id:        domain.Id,
+		Name:      domain.Name,
+		Age:       domain.Age,
+		NoHp:      domain.NoHp,
+		Dob:       domain.Dob,
+		Address:   domain.Address,
+		Email:     domain.Email,
+		Token:     domain.Token,
+		CreatedAt: domain.CreatedAt,
+		UpdatedAt: domain.UpdatedAt,
 	}
 }
