@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 func AddPayment(c echo.Context) error {
@@ -38,4 +39,25 @@ func AddPayment(c echo.Context) error {
 		Data:    (&paymentmethod),
 	})
 
+}
+
+func GetPayment(c echo.Context) error {
+	payment := []paymentMethod.PaymentMethods{}
+	result := config.DB.Find(&payment)
+
+	if result.Error != nil {
+		if result.Error != gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, models.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "can't find data",
+				Data:    nil,
+			})
+		}
+	}
+
+	return c.JSON(http.StatusOK, models.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "success get data",
+		Data:    payment,
+	})
 }
