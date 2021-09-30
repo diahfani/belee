@@ -12,7 +12,16 @@ import (
 
 func AddPayment(c echo.Context) error {
 	var addPayment paymentMethod.AddPayment
+	var nameExist paymentMethod.PaymentMethods
 	c.Bind(&addPayment)
+
+	if nameExist.Name == addPayment.Name {
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "duplicate name/method has been added before",
+			Data:    nil,
+		})
+	}
 
 	if addPayment.Name == "" {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
