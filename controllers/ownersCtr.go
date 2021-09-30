@@ -38,7 +38,7 @@ func OwnersRegisterController(c echo.Context) error {
 	var emailExist owner.Owners
 	c.Bind(&ownersReg)
 	// emailExist := c.Param("email")
-	if emailExist.Email != ownersReg.Email {
+	if emailExist.Email == ownersReg.Email {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "duplicate email",
