@@ -42,6 +42,7 @@ func AddPayment(c echo.Context) error {
 }
 
 func GetPayment(c echo.Context) error {
+
 	payment := []paymentMethod.PaymentMethods{}
 	result := config.DB.Find(&payment)
 
