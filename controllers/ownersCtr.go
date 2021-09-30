@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"belee/config"
 	"belee/middlewares"
+	"belee/models"
+	"belee/models/owner"
 	"errors"
-	"final_project/belee/config"
-	"final_project/belee/models"
-	"final_project/belee/models/owner"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

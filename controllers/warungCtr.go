@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"final_project/belee/config"
-	"final_project/belee/models"
-	"final_project/belee/models/warung"
+	"belee/config"
+	"belee/models"
+	"belee/models/warung"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

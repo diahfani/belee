@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"belee/config"
+	"belee/models"
 	"belee/models/buyer"
 	"errors"
-	"final_project/belee/config"
-	"final_project/belee/models"
 
 	// "belee/models/buyers"
 	"net/http"
