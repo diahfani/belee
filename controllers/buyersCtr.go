@@ -39,9 +39,16 @@ import (
 
 func RegisterController(c echo.Context) error {
 	var buyersReg buyer.BuyersRegist
+	var emailExist buyer.Buyers
 	c.Bind(&buyersReg)
 	// emailExist := c.Param("email")
-
+	if emailExist.Email != buyersReg.Email {
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "duplicate email",
+			Data:    nil,
+		})
+	}
 	//validations
 	if buyersReg.Name == "" || buyersReg.Age == "" || buyersReg.NoHp == "" || buyersReg.Dob == "" ||
 		buyersReg.Address == "" || buyersReg.Email == "" || buyersReg.Password == "" {
