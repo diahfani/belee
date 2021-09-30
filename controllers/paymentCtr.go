@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"belee/config"
-	"belee/models"
-	"belee/models/paymentMethod"
+	"final_project/belee/config"
+	"final_project/belee/models"
+	"final_project/belee/models/paymentMethod"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -42,15 +42,13 @@ func AddPayment(c echo.Context) error {
 }
 
 func GetPayment(c echo.Context) error {
-
 	payment := []paymentMethod.PaymentMethods{}
 	result := config.DB.Find(&payment)
-
 	if result.Error != nil {
 		if result.Error != gorm.ErrRecordNotFound {
 			return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 				Code:    http.StatusInternalServerError,
-				Message: "can't find data",
+				Message: "cant get data",
 				Data:    nil,
 			})
 		}
