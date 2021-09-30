@@ -42,7 +42,7 @@ func RegisterController(c echo.Context) error {
 	var emailExist buyer.Buyers
 	c.Bind(&buyersReg)
 	// emailExist := c.Param("email")
-	if emailExist.Email != buyersReg.Email {
+	if emailExist.Email == buyersReg.Email {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "duplicate email",
