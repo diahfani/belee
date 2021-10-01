@@ -5,6 +5,7 @@ import (
 	"belee/models/productsType"
 	"final_project/belee/config"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -36,5 +37,44 @@ func AddProductType(c echo.Context) error {
 		Code:    http.StatusOK,
 		Message: "success add products type",
 		Data:    (&productsType),
+	})
+}
+
+func GetDetailsProductsType(c echo.Context) error {
+	var productType productsType.ProductsType
+	pTypeId, _ := strconv.Atoi(c.Param("pTypeId"))
+
+	if err := config.DB.Where("id = ?", pTypeId).First(&productType).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "record not found",
+			Data:    nil,
+		})
+	}
+
+	return c.JSON(http.StatusOK, models.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "success get data",
+		Data:    productType,
+	})
+
+}
+
+func GetProductType(c echo.Context) error {
+	pType := []productsType.ProductsType{}
+	result := config.DB.Find(&pType)
+
+	if result.Error != nil {
+		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "cant get data",
+			Data:    nil,
+		})
+	}
+
+	return c.JSON(http.StatusOK, models.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "success get data",
+		Data:    pType,
 	})
 }
