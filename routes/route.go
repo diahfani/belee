@@ -44,7 +44,7 @@ func NewRoutes() *echo.Echo {
 	warung.GET("/:warungId", controllers.GetDetailsWarung)
 	// hanya owner
 	warung.POST("/add", controllers.AddWarung)
-	warung.PUT("/update", controllers.UpdateWarung)
+	warung.PUT("/update/:warungId", controllers.UpdateWarung)
 	warung.DELETE("/delete/:warungId", controllers.DeleteWarung)
 
 	// transactions
