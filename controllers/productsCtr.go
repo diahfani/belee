@@ -48,7 +48,7 @@ func CreateProducts(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "success add warung",
+		Message: "success add products",
 		Data:    (&productsdata),
 	})
 }
@@ -149,9 +149,9 @@ func DeleteProducts(c echo.Context) error {
 
 func DetailsProducts(c echo.Context) error {
 	var products products.Products
-	productsID, _ := strconv.Atoi(c.Param("productsId"))
+	productsname := c.Param("productsName")
 
-	if err := config.DB.Where("id = ?", productsID).First(&products).Error; err != nil {
+	if err := config.DB.Where("barang_name = ?", productsname).First(&products).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "record not found",
