@@ -3,7 +3,9 @@ package routes
 import (
 	// "belee/middlewares"
 	// "belee/middlewares"
+
 	"belee/controllers"
+	// "belee/middlewares"
 
 	"github.com/labstack/echo/v4"
 	// "github.com/labstack/echo/v4/middleware"
@@ -14,6 +16,9 @@ func NewRoutes() *echo.Echo {
 	// ev1 := e.Group("api/v1/")
 
 	// e.Pre(middleware.RemoveTrailingSlash())
+	// jwtSecretKey := os.Getenv("SECRET_JWT")
+	// jwt := middleware.JWT([]byte(jwtSecretKey))
+	// r := e.Group("/jwt")
 
 	//buyers
 	buyers := e.Group("api/v1/buyers")

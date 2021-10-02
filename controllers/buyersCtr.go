@@ -5,6 +5,7 @@ import (
 	"belee/models"
 	"belee/models/buyer"
 	"errors"
+	"log"
 
 	// "belee/models/buyers"
 	"net/http"
@@ -68,6 +69,15 @@ func RegisterController(c echo.Context) error {
 	buyersData.Email = buyersReg.Email
 	buyersData.Password = buyersReg.Password
 
+	// err := encrypt.BeforeSave()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	err := buyersData.BeforeSave(config.DB)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	result := config.DB.Create(&buyersData)
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
@@ -83,6 +93,16 @@ func RegisterController(c echo.Context) error {
 		Data:    (&buyersData),
 	})
 }
+
+// func Decrypt(password string) (string, error) {
+// 	var err error
+// 	buyers := buyer.Buyers{}
+// 	err = buyer.VerifyPassword(buyers.Password, password)
+// 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+// 		return "", nil
+// 	}
+// 	return password, nil
+// }
 
 func LoginController(c echo.Context) error {
 	buyersLogin := buyer.BuyersLogin{}
@@ -107,6 +127,8 @@ func LoginController(c echo.Context) error {
 			})
 		}
 	}
+
+	// Decrypt(buyers.Password)
 
 	token, err := middlewares.CreateToken(buyers.Id)
 	if err != nil {
