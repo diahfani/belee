@@ -130,6 +130,15 @@ func LoginController(c echo.Context) error {
 
 	// Decrypt(buyers.Password)
 
+	// access := encrypt.VerifyPassword(buyersLogin.Password, buyers.Password)
+	// if !access {
+	// 	return c.JSON(http.StatusForbidden, models.BaseResponse{
+	// 		Code:    http.StatusForbidden,
+	// 		Message: "access denied: password didn't match",
+	// 		Data:    nil,
+	// 	})
+	// }
+
 	token, err := middlewares.CreateToken(buyers.Id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
