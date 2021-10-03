@@ -58,9 +58,9 @@ func NewRoutes() *echo.Echo {
 	// transaction.GET("/:Id", controllers.DetailsTransaction)
 
 	//paymentMethod
-	// payment := e.Group("api/v1/payment")
-	// payment.POST("", controllers.AddPayment)
-	// payment.GET("/:payId", controllers.DetailsPayment)
+	payment := e.Group("api/v1/payment")
+	payment.POST("/add", controllers.AddPayment)
+	payment.GET("", controllers.GetPayment)
 
 	//productsType
 	typeProducts := e.Group("api/v1/typeProducts")
