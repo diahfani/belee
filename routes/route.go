@@ -63,10 +63,10 @@ func NewRoutes() *echo.Echo {
 	// payment.GET("/:payId", controllers.DetailsPayment)
 
 	//productsType
-	// typeProducts := e.Group("api/v1/typeProducts")
-	// typeProducts.POST("", controllers.AddTypeProducts)
-	// typeProducts.GET("", controllers.GetTypeProducts)
-	// typeProducts.GET("/:id", controllers.GetDetailsTypeProducts)
+	typeProducts := e.Group("api/v1/typeProducts")
+	typeProducts.POST("/add", controllers.AddProductType)
+	typeProducts.GET("", controllers.GetProductType)
+	typeProducts.GET("/:pTypeId", controllers.GetDetailsProductsType)
 	// typeProducts.PUT("/:id", controllers.UpdateTypeProducts)
 	// typeProducts.DELETE("/:id", controllers.DeleteTypeProducts)
 
