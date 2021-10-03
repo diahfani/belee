@@ -37,10 +37,10 @@ func NewRoutes() *echo.Echo {
 	//products
 	products := e.Group("api/v1/products")
 	products.GET("", controllers.GetProducts)
-	products.GET("/:productsId", controllers.DetailsProducts)
+	products.GET("/:productsName", controllers.DetailsProducts)
 	// hanya owners
 	products.POST("/add", controllers.CreateProducts)
-	products.PUT("/update", controllers.UpdateProducts)
+	products.PUT("/update/:productsId", controllers.UpdateProducts)
 	products.DELETE("/delete/:productsId", controllers.DeleteProducts)
 
 	//warungs
