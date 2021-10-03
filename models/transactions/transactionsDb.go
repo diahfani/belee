@@ -13,6 +13,7 @@ const (
 
 type Transactions struct {
 	Id           int       `gorm:"primaryKey" json:"id"`
+	UserID       int       `json:"userId"`
 	WarungID     int       `json:"warungId"`
 	PaymentID    int       `json:"paymentId"`
 	ProductsName int       `json:"productsName"`

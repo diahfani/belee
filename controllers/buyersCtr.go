@@ -69,10 +69,6 @@ func RegisterController(c echo.Context) error {
 	buyersData.Email = buyersReg.Email
 	buyersData.Password = buyersReg.Password
 
-	// err := encrypt.BeforeSave()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
 	err := buyersData.BeforeSave(config.DB)
 	if err != nil {
 		log.Fatal(err)

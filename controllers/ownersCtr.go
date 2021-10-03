@@ -6,6 +6,7 @@ import (
 	"belee/models"
 	"belee/models/owner"
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -64,6 +65,11 @@ func OwnersRegisterController(c echo.Context) error {
 	ownersData.Address = ownersReg.Address
 	ownersData.Email = ownersReg.Email
 	ownersData.Password = ownersReg.Password
+
+	err := ownersData.BeforeSave(config.DB)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := config.DB.Create(&ownersData)
 	if result.Error != nil {
