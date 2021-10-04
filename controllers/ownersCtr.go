@@ -2,12 +2,14 @@ package controllers
 
 import (
 	"belee/config"
+	"belee/handler/encrypt"
 	"belee/middlewares"
 	"belee/models"
 	"belee/models/owner"
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -111,7 +113,14 @@ func OwnersLoginController(c echo.Context) error {
 		}
 	}
 
-	token, err := middlewares.CreateToken(owners.Id)
+	if !encrypt.CheckPasswordHash(ownersLogin.Password, owners.Password) {
+		return c.JSON(http.StatusForbidden, models.BaseResponse{
+			Code:    http.StatusForbidden,
+			Message: "password didnt match",
+		})
+	}
+
+	token, err := middlewares.GenerateTokenOwnersJWT(owners.Id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 			Code:    http.StatusInternalServerError,
@@ -139,18 +148,25 @@ func OwnersLoginController(c echo.Context) error {
 
 }
 
-// func DetailsOwners(c echo.Context) error {
-// 	ownersID, err := strconv.Atoi(c.Param("ownersId"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
-// 			Code:    http.StatusInternalServerError,
-// 			Message: "failed",
-// 			Data:    nil,
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, models.BaseResponse{
-// 		Code:    http.StatusOK,
-// 		Message: "succeed",
-// 		Data:    owners.Owners{Id: ownersID},
-// 	})
-// }
+func DetailsOwners(c echo.Context) error {
+	var owners owner.Owners
+	ownerID, _ := strconv.Atoi(c.Param("ownersId"))
+
+	if err := config.DB.Where("id = ?", ownerID).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "record not found",
+			Data:    nil,
+		})
+	}
+	// config.DB.Preload("Warung").Find(&owners)
+	// var warung warung.Warungs
+	// config.DB.Where("id = ?", owners.Id).Preload("Warungs").First(&warung)
+	return c.JSON(http.StatusOK, models.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "success get data",
+		Data:    owners,
+	})
+
+	// .Preload("Warungs").First(&owners)
+}

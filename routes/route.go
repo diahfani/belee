@@ -1,40 +1,30 @@
 package routes
 
 import (
-	// "belee/middlewares"
-	// "belee/middlewares"
-
 	"belee/controllers"
-	// "belee/middlewares"
 
 	"github.com/labstack/echo/v4"
-	// "github.com/labstack/echo/v4/middleware"
 )
 
 func NewRoutes() *echo.Echo {
 	e := echo.New()
-	// ev1 := e.Group("api/v1/")
-
-	// e.Pre(middleware.RemoveTrailingSlash())
-	// jwtSecretKey := os.Getenv("SECRET_JWT")
-	// jwt := middleware.JWT([]byte(jwtSecretKey))
-	// r := e.Group("/jwt")
+	// jwtBuyer := middleware.JWT([]byte(constant.SECRET_JWT_BUYERS))
+	// jwtOwner := middleware.JWT([]byte(constant.SECRET_JWT_OWNERS))
 
 	//buyers
 	buyers := e.Group("api/v1/buyers")
-	// buyers.GET("", controllers.GetBuyersController)
 	buyers.POST("/login", controllers.LoginController)
 	buyers.POST("/register", controllers.RegisterController)
-	// buyers.GET("/:buyersId", controllers.DetailsBuyers)
+	buyers.GET("/:buyersId", controllers.DetailsBuyers)
 
 	//owners
 	owners := e.Group("api/v1/owners")
-	// owners.GET("", controllers.GetOwnersController)
 	owners.POST("/login", controllers.OwnersLoginController)
 	owners.POST("/register", controllers.OwnersRegisterController)
-	// owners.GET("/:buyersId", controllers.DetailsOwners)
+	owners.GET("/:ownersId", controllers.DetailsOwners)
 
 	//products
+
 	products := e.Group("api/v1/products")
 	products.GET("", controllers.GetProducts)
 	products.GET("/:productsName", controllers.DetailsProducts)
@@ -53,9 +43,10 @@ func NewRoutes() *echo.Echo {
 	warung.DELETE("/delete/:warungId", controllers.DeleteWarung)
 
 	// transactions
-	// transaction := e.Group("api/v1/transactions")
-	// transaction.POST("", controllers.AddTransactions)
-	// transaction.GET("/:Id", controllers.DetailsTransaction)
+	transaction := e.Group("api/v1/transactions")
+	transaction.POST("/add", controllers.AddTransaction)
+	transaction.GET("/:transactionId", controllers.DetailsTransaction)
+	transaction.DELETE("delete/:transactionId", controllers.DeleteTransaction)
 
 	//paymentMethod
 	payment := e.Group("api/v1/payment")
@@ -67,10 +58,7 @@ func NewRoutes() *echo.Echo {
 	typeProducts.POST("/add", controllers.AddProductType)
 	typeProducts.GET("", controllers.GetProductType)
 	typeProducts.GET("/:pTypeId", controllers.GetDetailsProductsType)
-	// typeProducts.PUT("/:id", controllers.UpdateTypeProducts)
-	// typeProducts.DELETE("/:id", controllers.DeleteTypeProducts)
 
-	// search products in warung
-	// warung.GET("/warung/:warungId/products/productsId", controllers.GetProducts)
+	// m.LogMiddleware(e)
 	return e
 }

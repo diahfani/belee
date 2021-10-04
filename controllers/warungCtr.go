@@ -45,10 +45,16 @@ func AddWarung(c echo.Context) error {
 			Data:    nil,
 		})
 	}
+	var warung warung.Warungs
+	// var owners owner.Owners
+	// config.DB.Where("id = ?", owners.Id).Preload()
+
+	config.DB.Preload("Owner").Last(&warung)
+
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success add warung",
-		Data:    (&warungdata),
+		Data:    (&warung),
 	})
 }
 

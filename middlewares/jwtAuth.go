@@ -2,14 +2,7 @@ package middlewares
 
 import (
 	"belee/constant"
-	"encoding/json"
 	"errors"
-	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"strconv"
-	"strings"
 
 	// "go/constant"
 
@@ -20,22 +13,23 @@ import (
 )
 
 type JwtClaims struct {
-	BuyersId int `json:"uyersId"`
+	Id int `json:"Id"`
 	jwt.StandardClaims
 }
 
-func CreateToken(id int) (string, error) {
+func GenerateTokenBuyersJWT(id int) (string, error) {
+
 	claims := JwtClaims{
 		id,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * 1).Unix(),
 		},
 	}
-	fmt.Println(claims)
+	// fmt.Println(claims)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, err := token.SignedString([]byte(constant.SECRET_JWT))
+	t, err := token.SignedString([]byte(constant.SECRET_JWT_BUYERS))
 
 	if err != nil {
 		return "", err
@@ -44,7 +38,27 @@ func CreateToken(id int) (string, error) {
 	return t, nil
 }
 
-func GetClaims(c echo.Context) (int, error) {
+func GenerateTokenOwnersJWT(id int) (string, error) {
+	claims := JwtClaims{
+		id,
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Local().Add(time.Hour * 1).Unix(),
+		},
+	}
+	// fmt.Println(claims)
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	t, err := token.SignedString([]byte(constant.SECRET_JWT_OWNERS))
+
+	if err != nil {
+		return "", err
+	}
+
+	return t, nil
+}
+
+func GetClaimsBuyers(c echo.Context) (int, error) {
 	buyers := c.Get("buyers")
 	if buyers != nil {
 		buyersJwt := buyers.(*jwt.Token)
@@ -54,71 +68,84 @@ func GetClaims(c echo.Context) (int, error) {
 			return int(buyersId), nil
 		}
 	}
-	return 0, errors.New("Failed Create JWT")
+	return 0, errors.New("Failed claims JWT")
 }
 
-func TokenValid(r *http.Request) error {
-	tokenString := ExtractToken(r)
-	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", t.Header)
+func GetClaimsOwners(c echo.Context) (int, error) {
+	owners := c.Get("owners")
+	if owners != nil {
+		ownersJwt := owners.(*jwt.Token)
+		if ownersJwt.Valid {
+			claims := ownersJwt.Claims.(jwt.MapClaims)
+			ownersId := claims["buyersId"].(float64)
+			return int(ownersId), nil
 		}
-		return []byte(os.Getenv("SECRET_JWT")), nil
-	})
-	if err != nil {
-		return err
 	}
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		Pretty(claims)
-	}
-	return nil
+	return 0, errors.New("Failed claims JWT")
 }
 
-func ExtractToken(r *http.Request) string {
-	keys := r.URL.Query()
-	token := keys.Get("token")
-	if token != "" {
-		return token
-	}
+// func TokenValid(r *http.Request) error {
+// 	tokenString := ExtractToken(r)
+// 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+// 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+// 			return nil, fmt.Errorf("Unexpected signing method: %v", t.Header)
+// 		}
+// 		return []byte(os.Getenv("SECRET_JWT")), nil
+// 	})
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+// 		Pretty(claims)
+// 	}
+// 	return nil
+// }
 
-	bearerToken := r.Header.Get("Authorization")
-	if len(strings.Split(bearerToken, " ")) == 2 {
-		return strings.Split(bearerToken, " ")[1]
-	}
+// func ExtractToken(r *http.Request) string {
+// 	keys := r.URL.Query()
+// 	token := keys.Get("token")
+// 	if token != "" {
+// 		return token
+// 	}
 
-	return ""
+// 	bearerToken := r.Header.Get("Authorization")
+// 	if len(strings.Split(bearerToken, " ")) == 2 {
+// 		return strings.Split(bearerToken, " ")[1]
+// 	}
 
-}
+// 	return ""
 
-func ExtractTokenID(r *http.Request) (uint32, error) {
-	tokenString := ExtractToken(r)
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(os.Getenv("SECRET_JWT")), nil
-	})
-	if err != nil {
-		return 0, err
-	}
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok && token.Valid {
-		buyerid, err := strconv.ParseUint(fmt.Sprintf("%.0f", claims["buyersId"]), 10, 32)
-		if err != nil {
-			return 0, err
-		}
-		return uint32(buyerid), nil
-	}
-	return 0, nil
+// }
 
-}
+// func ExtractTokenID(r *http.Request) (uint32, error) {
+// 	tokenString := ExtractToken(r)
+// 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+// 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+// 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+// 		}
+// 		return []byte(os.Getenv("SECRET_JWT")), nil
+// 	})
+// 	if err != nil {
+// 		return 0, err
+// 	}
+// 	claims, ok := token.Claims.(jwt.MapClaims)
+// 	if ok && token.Valid {
+// 		buyerid, err := strconv.ParseUint(fmt.Sprintf("%.0f", claims["buyersId"]), 10, 32)
+// 		if err != nil {
+// 			return 0, err
+// 		}
+// 		return uint32(buyerid), nil
+// 	}
+// 	return 0, nil
 
-func Pretty(data interface{}) {
-	b, err := json.MarshalIndent(data, "", " ")
-	if err != nil {
-		log.Println(err)
-		return
-	}
+// }
 
-	fmt.Println(string(b))
-}
+// func Pretty(data interface{}) {
+// 	b, err := json.MarshalIndent(data, "", " ")
+// 	if err != nil {
+// 		log.Println(err)
+// 		return
+// 	}
+
+// 	fmt.Println(string(b))
+// }

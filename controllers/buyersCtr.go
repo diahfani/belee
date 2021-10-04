@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"belee/config"
+	"belee/handler/encrypt"
 	"belee/models"
 	"belee/models/buyer"
 	"errors"
-	"log"
+	"strconv"
 
 	// "belee/models/buyers"
 	"net/http"
@@ -67,12 +68,17 @@ func RegisterController(c echo.Context) error {
 	buyersData.Dob = buyersReg.Dob
 	buyersData.Address = buyersReg.Address
 	buyersData.Email = buyersReg.Email
-	buyersData.Password = buyersReg.Password
+	buyersData.Password, _ = encrypt.Hash(buyersReg.Password)
 
-	err := buyersData.BeforeSave(config.DB)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// var err error
+	// buyersData.Password, err = GeneratehashPassword(buyersData.Password)
+	// if err != nil {
+	// 	log.Fatal("error in password hash")
+	// }
+	// err := buyersData.BeforeSave(config.DB)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	result := config.DB.Create(&buyersData)
 	if result.Error != nil {
@@ -89,6 +95,11 @@ func RegisterController(c echo.Context) error {
 		Data:    (&buyersData),
 	})
 }
+
+// func GeneratehashPassword(password string) (string, error) {
+// 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+// 	return string(bytes), err
+// }
 
 // func Decrypt(password string) (string, error) {
 // 	var err error
@@ -124,6 +135,13 @@ func LoginController(c echo.Context) error {
 		}
 	}
 
+	if !encrypt.CheckPasswordHash(buyersLogin.Password, buyers.Password) {
+		return c.JSON(http.StatusForbidden, models.BaseResponse{
+			Code:    http.StatusForbidden,
+			Message: "password didnt match",
+		})
+	}
+
 	// Decrypt(buyers.Password)
 
 	// access := encrypt.VerifyPassword(buyersLogin.Password, buyers.Password)
@@ -135,7 +153,7 @@ func LoginController(c echo.Context) error {
 	// 	})
 	// }
 
-	token, err := middlewares.CreateToken(buyers.Id)
+	token, err := middlewares.GenerateTokenBuyersJWT(buyers.Id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 			Code:    http.StatusInternalServerError,
@@ -170,18 +188,22 @@ func LoginController(c echo.Context) error {
 	})
 }
 
-// func DetailsBuyers(c echo.Context) error {
-// 	buyersId, err := strconv.Atoi(c.Param("buyersId"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
-// 			Code:    http.StatusInternalServerError,
-// 			Message: "failed",
-// 			Data:    nil,
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, models.BaseResponse{
-// 		Code:    http.StatusOK,
-// 		Message: "succeed",
-// 		Data:    buyers.Buyers{Id: buyersId},
-// 	})
-// }
+func DetailsBuyers(c echo.Context) error {
+	var buyers buyer.Buyers
+	buyerID, _ := strconv.Atoi(c.Param("buyersId"))
+
+	if err := config.DB.Where("id = ?", buyerID).First(&buyers).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "record not found",
+			Data:    nil,
+		})
+	}
+
+	// config.DB.Where("id = ?", owners.Id).Preload("Warungs").First(&owners)
+	return c.JSON(http.StatusOK, models.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "success get data",
+		Data:    buyers,
+	})
+}

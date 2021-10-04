@@ -23,21 +23,10 @@ func CreateProducts(c echo.Context) error {
 	}
 
 	var productsdata products.Products
-	// warungdata.OwnersID = addwarungs.OwnersID
 	productsdata.BarangName = addproducts.BarangName
 	productsdata.Qty = addproducts.Qty
 	productsdata.Price = addproducts.Price
-	// warungdata.OwnersName = addwarungs.OwnersName
-	// var Owners owner.Owners
-	// joinOwner := config.DB.Joins("owners").Where("id = ? and name = ?", Owners.Id, Owners.Name)
 
-	// if joinOwner.Error != nil {
-	// 	return c.JSON(http.StatusInternalServerError, models.BaseResponse{
-	// 		Code:    http.StatusInternalServerError,
-	// 		Message: "gabisa join",
-	// 		Data:    nil,
-	// 	})
-	// }
 	result := config.DB.Create(&productsdata)
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{

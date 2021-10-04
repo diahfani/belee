@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"final_project/belee/config"
-	"final_project/belee/models"
-	"final_project/belee/models/paymentMethod"
+	"belee/config"
+	"belee/models"
+	"belee/models/paymentMethod"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
