@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"belee/config"
-	"belee/handler/encrypt"
-	"belee/middlewares"
-	"belee/models"
-	"belee/models/owner"
 	"errors"
+	"final_project/belee/config"
+	"final_project/belee/handler/encrypt"
+	"final_project/belee/middlewares"
+	"final_project/belee/models"
+	"final_project/belee/models/owner"
 	"log"
 	"net/http"
 	"strconv"

@@ -1,13 +1,16 @@
 package routes
 
 import (
-	"belee/controllers"
+	"final_project/belee/controllers"
+	// "belee/middlewares"
 
 	"github.com/labstack/echo/v4"
 )
 
 func NewRoutes() *echo.Echo {
 	e := echo.New()
+	// e.Use(middleware.Logger())
+	// e.Use(middleware.JWT([]byte("secret")))
 	// jwtBuyer := middleware.JWT([]byte(constant.SECRET_JWT_BUYERS))
 	// jwtOwner := middleware.JWT([]byte(constant.SECRET_JWT_OWNERS))
 
