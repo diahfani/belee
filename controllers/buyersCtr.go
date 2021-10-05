@@ -117,7 +117,7 @@ func LoginController(c echo.Context) error {
 
 	buyers := buyer.Buyers{}
 
-	result := config.DB.First(&buyers, "email = ? AND password = ?", buyersLogin.Email, buyersLogin.Password)
+	result := config.DB.First(&buyers, "email = ?", buyersLogin.Email)
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

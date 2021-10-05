@@ -46,7 +46,7 @@ func NewRoutes() *echo.Echo {
 	transaction := e.Group("api/v1/transactions")
 	transaction.POST("/add", controllers.AddTransaction)
 	transaction.GET("/:transactionId", controllers.DetailsTransaction)
-	transaction.DELETE("delete/:transactionId", controllers.DeleteTransaction)
+	transaction.DELETE("/delete/:transactionId", controllers.DeleteTransaction)
 
 	//paymentMethod
 	payment := e.Group("api/v1/payment")

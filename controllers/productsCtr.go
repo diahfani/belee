@@ -4,6 +4,8 @@ import (
 	"belee/config"
 	"belee/models"
 	"belee/models/products"
+	"belee/models/productsType"
+	"belee/models/warung"
 	"net/http"
 	"strconv"
 
@@ -12,6 +14,8 @@ import (
 
 func CreateProducts(c echo.Context) error {
 	var addproducts products.AddProducts
+	var warung warung.Warungs
+	var producttype productsType.ProductsType
 	c.Bind(&addproducts)
 
 	if addproducts.BarangName == "" {
@@ -23,6 +27,8 @@ func CreateProducts(c echo.Context) error {
 	}
 
 	var productsdata products.Products
+	productsdata.BarangTypeID = addproducts.BarangTypeID
+	productsdata.WarungID = addproducts.WarungID
 	productsdata.BarangName = addproducts.BarangName
 	productsdata.Qty = addproducts.Qty
 	productsdata.Price = addproducts.Price
@@ -35,10 +41,22 @@ func CreateProducts(c echo.Context) error {
 			Data:    nil,
 		})
 	}
+	config.DB.Preload("buyers").First(&warung, "id = ?", productsdata.WarungID)
+	config.DB.Preload("products").First(&producttype, "id = ?", productsdata.BarangTypeID)
+
+	response := products.ProductResponse{
+		Id:         productsdata.Id,
+		Warung:     &warung,
+		BarangType: &producttype,
+		BarangName: productsdata.BarangName,
+		Qty:        productsdata.Qty,
+		Price:      productsdata.Price,
+	}
+
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success add products",
-		Data:    (&productsdata),
+		Data:    (&response),
 	})
 }
 
@@ -137,21 +155,33 @@ func DeleteProducts(c echo.Context) error {
 }
 
 func DetailsProducts(c echo.Context) error {
-	var products products.Products
+	var product products.Products
+	// var warung warung.Warungs
+	// var producttype productsType.ProductsType
 	productsname := c.Param("productsName")
 
-	if err := config.DB.Where("barang_name = ?", productsname).First(&products).Error; err != nil {
+	if err := config.DB.Where("barang_name = ?", productsname).First(&product).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "record not found",
 			Data:    nil,
 		})
 	}
+	// config.DB.Preload("buyers").First(&warung, "id = ?", product.WarungID)
+	// config.DB.Preload("products").First(&producttype, "id = ?", product.BarangTypeID)
+
+	// response := products.ProductResponse{
+	// 	Id:         product.Id,
+	// 	Warung:     &warung,
+	// 	BarangType: &producttype,
+	// 	BarangName: product.BarangName,
+	// 	Qty:        product.Qty,
+	// 	Price:      product.Price,
 
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success get data",
-		Data:    products,
+		Data:    product,
 	})
 
 }

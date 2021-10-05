@@ -3,7 +3,11 @@ package controllers
 import (
 	"belee/config"
 	"belee/models"
+	"belee/models/buyer"
+	"belee/models/paymentMethod"
+	"belee/models/products"
 	"belee/models/transactions"
+	"belee/models/warung"
 	"net/http"
 	"strconv"
 
@@ -11,77 +15,113 @@ import (
 )
 
 func AddTransaction(c echo.Context) error {
-	var addTr transactions.Addtransactions
-	c.Bind(&addTr)
-	// if err := c.Bind(&addTr); err != nil {
+	var addTransaction transactions.Addtransactions
+
+	var buyer buyer.Buyers
+	var barang products.Products
+	var warung warung.Warungs
+	var payment paymentMethod.PaymentMethods
+	c.Bind(&addTransaction)
+
+	// prod := config.DB.Where("id = ?", addTransaction.BarangId).Find(&barang).Error
+	// if prod != nil {
 	// 	return c.JSON(http.StatusBadRequest, models.BaseResponse{
 	// 		Code:    http.StatusBadRequest,
-	// 		Message: "cant create transactions",
+	// 		Message: "products not found",
 	// 		Data:    nil,
 	// 	})
 	// }
-	if addTr.ProductsName == "" {
+
+	if addTransaction.ProductsName == "" {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
-			Message: "Name empty",
+			Message: "choose products first",
 			Data:    nil,
 		})
 	}
-	var transData transactions.Transactions
-	transData.ProductsName = addTr.ProductsName
-	transData.TotalQty = addTr.TotalQty
-	transData.TotalPrice = addTr.Totalprice
-	// transData.Status = addTr.Status
+	var transactionsData transactions.Transactions
+	transactionsData.BuyerID = addTransaction.BuyerId
+	transactionsData.WarungID = addTransaction.WarungId
+	transactionsData.PaymentID = addTransaction.PaymentId
+	transactionsData.BarangID = addTransaction.BarangId
+	transactionsData.ProductsName = addTransaction.ProductsName
+	transactionsData.TotalQty = addTransaction.TotalQty
+	transactionsData.TotalPrice = addTransaction.Totalprice
 
-	result := config.DB.Create(&addTr)
+	result := config.DB.Create(&transactionsData)
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 			Code:    http.StatusInternalServerError,
-			Message: "cant add data",
+			Message: "there's mistake when input data",
 			Data:    nil,
 		})
 	}
+
+	// config.DB.Save(&transactionsData)
+	config.DB.Preload("buyers").First(&buyer, "id = ?", transactionsData.BuyerID)
+	config.DB.Preload("products").First(&barang, "id = ?", transactionsData.BarangID)
+	config.DB.Preload("payment_methods").First(&payment, "id = ?", transactionsData.PaymentID)
+	config.DB.Preload("warungs").First(&warung, "id = ?", transactionsData.WarungID)
+	// TransResponse := transactions.BuyerTransactionResponse{
+	// 	Id:    buyer.Id,
+	// 	Name:  buyer.Name,
+	// 	Email: buyer.Email,
+	// }
+
+	response := transactions.TransactionResponse{
+		Id:           transactionsData.Id,
+		Buyer:        &buyer,
+		Warung:       &warung,
+		Barang:       &barang,
+		Payment:      &payment,
+		ProductsName: addTransaction.ProductsName,
+		TotalQty:     addTransaction.TotalQty,
+		TotalPrice:   addTransaction.Totalprice,
+	}
+
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "success create transactions",
-		Data:    result,
+		Message: "success add transactions",
+		Data:    (&response),
 	})
 
 }
 
 func DetailsTransaction(c echo.Context) error {
-	var tr transactions.Transactions
-	transId := c.Param("transactionId")
+	var transaction transactions.Transactions
+	var buyer buyer.Buyers
+	var barang products.Products
+	var warung warung.Warungs
+	var payment paymentMethod.PaymentMethods
+	transID := c.Param("transactionId")
 
-	if err := config.DB.Where("id = ?", transId).Error; err != nil {
+	if err := config.DB.Where("id = ?", transID).First(&transaction).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "record not found",
 			Data:    nil,
 		})
 	}
+	config.DB.Preload("buyers").First(&buyer, "id = ?", transaction.BuyerID)
+	config.DB.Preload("products").First(&barang, "id = ?", transaction.BarangID)
+	config.DB.Preload("payment_methods").First(&payment, "id = ?", transaction.PaymentID)
+	config.DB.Preload("warungs").First(&warung, "id = ?", transaction.WarungID)
 
+	response := transactions.TransactionResponse{
+		Id:           transaction.Id,
+		Buyer:        &buyer,
+		Warung:       &warung,
+		Barang:       &barang,
+		Payment:      &payment,
+		ProductsName: transaction.ProductsName,
+		TotalQty:     transaction.TotalQty,
+		TotalPrice:   transaction.TotalPrice,
+	}
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success get data",
-		Data:    tr,
+		Data:    response,
 	})
-	// var tr transactions.Transactions
-	// trID, _ := strconv.Atoi(c.Param("transactionsId"))
-
-	// if err := config.DB.Where("id = ?", trID).Preload("Buyers", "Warungs", "Products", "PaymentMethods").Find(&tr); err != nil {
-	// 	return c.JSON(http.StatusBadRequest, models.BaseResponse{
-	// 		Code:    http.StatusBadRequest,
-	// 		Message: "record not found",
-	// 		Data:    nil,
-	// 	})
-	// }
-
-	// return c.JSON(http.StatusOK, models.BaseResponse{
-	// 	Code:    http.StatusOK,
-	// 	Message: "success get data",
-	// 	Data:    tr,
-	// })
 }
 
 func DeleteTransaction(c echo.Context) error {

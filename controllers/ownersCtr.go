@@ -95,7 +95,7 @@ func OwnersLoginController(c echo.Context) error {
 
 	owners := owner.Owners{}
 
-	result := config.DB.First(&owners, "email = ? AND password = ?", ownersLogin.Email, ownersLogin.Password)
+	result := config.DB.First(&owners, "email = ?", ownersLogin.Email)
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

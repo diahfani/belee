@@ -8,8 +8,8 @@ type HashPassword struct {
 	Password string
 }
 
-func Hash(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+func Hash(secret string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(secret), bcrypt.MinCost)
 	return string(bytes), err
 }
 

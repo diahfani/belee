@@ -3,7 +3,8 @@ package controllers
 import (
 	"belee/config"
 	"belee/models"
-	"final_project/belee/models/warung"
+	"belee/models/owner"
+	"belee/models/warung"
 	"net/http"
 	"strconv"
 
@@ -12,6 +13,7 @@ import (
 
 func AddWarung(c echo.Context) error {
 	var addwarungs warung.AddWarungs
+	var owners owner.Owners
 	c.Bind(&addwarungs)
 
 	if addwarungs.Name == "" {
@@ -23,7 +25,7 @@ func AddWarung(c echo.Context) error {
 	}
 
 	var warungdata warung.Warungs
-	// warungdata.OwnersID = addwarungs.OwnersID
+	warungdata.OwnersID = addwarungs.OwnersID
 	warungdata.Name = addwarungs.Name
 	warungdata.Address = addwarungs.Address
 	// warungdata.OwnersName = addwarungs.OwnersName
@@ -45,24 +47,28 @@ func AddWarung(c echo.Context) error {
 			Data:    nil,
 		})
 	}
-	var warung warung.Warungs
-	// var owners owner.Owners
-	// config.DB.Where("id = ?", owners.Id).Preload()
+	config.DB.Preload("owners").First(&owners, "id = ?", warungdata.OwnersID)
 
-	config.DB.Preload("Owner").Last(&warung)
+	response := warung.WarungRes{
+		Owner:     &owners,
+		Name:      warungdata.Name,
+		Address:   warungdata.Address,
+		CreatedAt: warungdata.CreatedAt,
+	}
 
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success add warung",
-		Data:    (&warung),
+		Data:    (&response),
 	})
 }
 
 func GetDetailsWarung(c echo.Context) error {
-	var warung warung.Warungs
+	var warungs warung.Warungs
+	var owners owner.Owners
 	warungID, _ := strconv.Atoi(c.Param("warungId"))
 
-	if err := config.DB.Where("id = ?", warungID).First(&warung).Error; err != nil {
+	if err := config.DB.Where("id = ?", warungID).First(&warungs).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "record not found",
@@ -70,10 +76,19 @@ func GetDetailsWarung(c echo.Context) error {
 		})
 	}
 
+	config.DB.Preload("owners").First(&owners, "id = ?", warungs.OwnersID)
+
+	response := warung.WarungRes{
+		Owner:     &owners,
+		Name:      warungs.Name,
+		Address:   warungs.Address,
+		CreatedAt: warungs.CreatedAt,
+	}
+
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success get data",
-		Data:    warung,
+		Data:    response,
 	})
 
 }

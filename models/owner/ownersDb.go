@@ -1,7 +1,6 @@
 package owner
 
 import (
-	"belee/models/warung"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -9,17 +8,17 @@ import (
 )
 
 type Owners struct {
-	Id        int              `gorm:"primaryKey" json:"id"`
-	WarungID  []warung.Warungs `json:",omitempty" gorm:"foreignKey:OwnersID"`
-	Name      string           `json:"name" gorm:"not null"`
-	Age       string           `json:"age" gorm:"not null"`
-	NoHp      string           `json:"nohp" gorm:"not null"`
-	Dob       string           `json:"dob" gorm:"not null"`
-	Address   string           `json:"address" gorm:"not null"`
-	Email     string           `json:"email" gorm:"unique"`
-	Password  string           `json:"password" gorm:"not null"`
-	CreatedAt time.Time        `json:"created_at"`
-	UpdatedAt time.Time        `json:"updated_at"`
+	Id int `gorm:"primaryKey" json:"id"`
+	// WarungID  []warung.Warungs `json:",omitempty" gorm:"foreignKey:OwnersID"`
+	Name      string    `json:"name" gorm:"not null"`
+	Age       string    `json:"age" gorm:"not null"`
+	NoHp      string    `json:"nohp" gorm:"not null"`
+	Dob       string    `json:"dob" gorm:"not null"`
+	Address   string    `json:"address" gorm:"not null"`
+	Email     string    `json:"email" gorm:"unique"`
+	Password  string    `json:"password" gorm:"not null"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func Hash(password string) ([]byte, error) {

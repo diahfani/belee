@@ -12,6 +12,7 @@ import (
 
 func AddProductType(c echo.Context) error {
 	var addProductType productsType.AddType
+	// response := productsType.ProductsTypeResponse{}
 	c.Bind(&addProductType)
 
 	if addProductType.NameType == "" {
@@ -33,6 +34,7 @@ func AddProductType(c echo.Context) error {
 			Data:    nil,
 		})
 	}
+
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success add products type",
