@@ -1,9 +1,9 @@
 package main
 
 import (
-	"belee/config"
+	"final_project/belee/config"
 
-	"belee/routes"
+	"final_project/belee/routes"
 )
 
 func main() {
