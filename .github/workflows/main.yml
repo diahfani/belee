@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 # contoh github workflow untuk github actions (CI)
 name: Running unit test, build docker image, push to docker hub and deploy to EC2
 
@@ -70,4 +68,3 @@ jobs:
 
 
 
->>>>>>> Stashed changes
