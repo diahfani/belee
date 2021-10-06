@@ -1,0 +1,70 @@
+# contoh github workflow untuk github actions (CI)
+name: Running unit test, build docker image, push to docker hub and deploy to EC2
+
+on:
+  push:
+    branches:
+      - 'feature/mvc'
+  pull_request:
+    branches:
+      - 'feature/mvc'
+
+jobs:
+  unit-test:
+    name: "unit test"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+    - name: running unit test
+      run: go test ./... -cover
+  
+  build-push-docker:
+    name: "build image and push to registry"
+    runs-on: ubuntu-latest
+    needs: unit-test
+    steps:
+    - uses: actions/checkout@v2
+    - name: build docker
+      run: docker build -t 2010010700/belee:1.0.0 .
+    - name: login registry docker hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - name: push image to registry docker hub
+      run: docker push 2010010700/belee:1.0.0
+  
+  # deployment-ec2:
+  #   name: "Deploy to ec2 from registry docker hub"
+  #   runs-on: ubuntu-latest
+  #   needs: build-push-docker
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: configuration SSH
+  #       env:
+  #         SSH_USER: ${{ secrets.SSH_USERNAME }}
+  #         SSH_KEY: ${{ secrets.SSH_KEY }}
+  #         SSH_HOST: ${{secrets.SSH_HOST }}
+  #       run: ||
+  #         mkdir -p ~/.ssh/
+  #         echo "$SSH_KEY" > ~/.ssh/belee.pem
+  #         chmod 400 ~/.ssh/belee.pem
+  #         cat >>~/.ssh/config <<END
+  #         Host development
+  #           HostName $SSH_HOST
+  #           User $SSH_USER
+  #           IdentifyFile ~/.ssh/belee.pem
+  #           StrictHostKeyChecking=no
+  #         END
+  #     - name: Connect EC2 & Remove All Container & Pull from registry & start
+  #       run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull 2010010700/belee:1.0.0 && docker run -d -p 8080:8080'
+
+
+
+
+
+
