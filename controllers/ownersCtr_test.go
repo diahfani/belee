@@ -266,7 +266,7 @@ func TestRegisterOwnersFailedEmptyPassword(t *testing.T) {
 		"email":"diahfani@aol.com",
 		"password":""
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyer/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)

@@ -28,7 +28,7 @@ func TestAddProductsTypeSuccess(t *testing.T) {
 	e := InitEchoTestApi()
 	requestBody := strings.NewReader(`{"nametype":"makanan"}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/typeProducts/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/typeProducts", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -50,7 +50,7 @@ func TestAddProductsTypeFailedEmptyName(t *testing.T) {
 	e := InitEchoTestApi()
 	requestBody := strings.NewReader(`{"nametype":""}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/typeProducts/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/typeProducts", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()

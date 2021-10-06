@@ -28,7 +28,7 @@ func TestAddPaymentSuccess(t *testing.T) {
 	e := InitEchoTestApi()
 	requestBody := strings.NewReader(`{"name":"cash"}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -50,7 +50,7 @@ func TestAddPaymentFailedEmptyName(t *testing.T) {
 	e := InitEchoTestApi()
 	requestBody := strings.NewReader(`{"name":""}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -73,7 +73,7 @@ func TestAddPaymentFailedDuplicateName(t *testing.T) {
 	InsertDataPayment()
 	requestBody := strings.NewReader(`{"name":"cash"}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()

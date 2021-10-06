@@ -322,7 +322,7 @@ func TestLoginBuyersFailedByPassword(t *testing.T) {
 		"email":"diaharini@aol.com",
 		"password":"diahaufa012"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyer/login", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/login", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -347,7 +347,7 @@ func TestLoginBuyersSuccess(t *testing.T) {
 		"email":"diahaaa@aol.com",
 		"password":"diahaufa000"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyer/login", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/login", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)

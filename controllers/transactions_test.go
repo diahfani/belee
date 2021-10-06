@@ -43,7 +43,7 @@ func TestAddTransactionSuccess(t *testing.T) {
 		"totalqty":"2",
 		"totalprice":"3000"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/transactions/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/transactions", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -73,7 +73,7 @@ func TestAddTransactionFailedEmptyName(t *testing.T) {
 		"totalqty":"2",
 		"totalprice":"3000"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/transactions/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/transactions", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
