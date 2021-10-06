@@ -12,16 +12,16 @@ import (
 
 func AddPayment(c echo.Context) error {
 	var addPayment paymentMethod.AddPayment
-	var nameExist paymentMethod.PaymentMethods
+	// var nameExist paymentMethod.PaymentMethods
 	c.Bind(&addPayment)
 
-	if nameExist.Name == addPayment.Name {
-		return c.JSON(http.StatusBadRequest, models.BaseResponse{
-			Code:    http.StatusBadRequest,
-			Message: "duplicate name/method has been added before",
-			Data:    nil,
-		})
-	}
+	// if nameExist.Name == addPayment.Name {
+	// 	return c.JSON(http.StatusBadRequest, models.BaseResponse{
+	// 		Code:    http.StatusBadRequest,
+	// 		Message: "duplicate name/method has been added before",
+	// 		Data:    nil,
+	// 	})
+	// }
 
 	if addPayment.Name == "" {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
@@ -36,9 +36,9 @@ func AddPayment(c echo.Context) error {
 
 	result := config.DB.Create(&paymentmethod)
 	if result.Error != nil {
-		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
-			Code:    http.StatusInternalServerError,
-			Message: "there's mistake when input data",
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "duplicate payment name",
 			Data:    nil,
 		})
 	}

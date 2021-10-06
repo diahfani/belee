@@ -41,16 +41,16 @@ import (
 
 func RegisterController(c echo.Context) error {
 	var buyersReg buyer.BuyersRegist
-	var emailExist buyer.Buyers
+	// var emailExist buyer.Buyers
 	c.Bind(&buyersReg)
 	// emailExist := c.Param("email")
-	if emailExist.Email == buyersReg.Email {
-		return c.JSON(http.StatusBadRequest, models.BaseResponse{
-			Code:    http.StatusBadRequest,
-			Message: "duplicate email",
-			Data:    nil,
-		})
-	}
+	// if emailExist.Email == buyersReg.Email {
+	// 	return c.JSON(http.StatusBadRequest, models.BaseResponse{
+	// 		Code:    http.StatusBadRequest,
+	// 		Message: "duplicate email",
+	// 		Data:    nil,
+	// 	})
+	// }
 	//validations
 	if buyersReg.Name == "" || buyersReg.Age == "" || buyersReg.NoHp == "" || buyersReg.Dob == "" ||
 		buyersReg.Address == "" || buyersReg.Email == "" || buyersReg.Password == "" {
@@ -82,9 +82,9 @@ func RegisterController(c echo.Context) error {
 
 	result := config.DB.Create(&buyersData)
 	if result.Error != nil {
-		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
-			Code:    http.StatusInternalServerError,
-			Message: "there's mistake when input data",
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "duplicate email",
 			Data:    nil,
 		})
 	}
