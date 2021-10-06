@@ -1,13 +1,12 @@
 package controllers
 
 import (
+	"belee/config"
+	"belee/middlewares"
+	"belee/models"
+	"belee/models/owner"
 	"errors"
-	"final_project/belee/config"
-	"final_project/belee/handler/encrypt"
-	"final_project/belee/middlewares"
-	"final_project/belee/models"
-	"final_project/belee/models/owner"
-	"log"
+
 	"net/http"
 	"strconv"
 
@@ -38,16 +37,16 @@ import (
 
 func OwnersRegisterController(c echo.Context) error {
 	var ownersReg owner.OwnersRegist
-	var emailExist owner.Owners
+	// var emailExist owner.Owners
 	c.Bind(&ownersReg)
 	// emailExist := c.Param("email")
-	if emailExist.Email == ownersReg.Email {
-		return c.JSON(http.StatusBadRequest, models.BaseResponse{
-			Code:    http.StatusBadRequest,
-			Message: "duplicate email",
-			Data:    nil,
-		})
-	}
+	// if emailExist.Email == ownersReg.Email {
+	// 	return c.JSON(http.StatusBadRequest, models.BaseResponse{
+	// 		Code:    http.StatusBadRequest,
+	// 		Message: "duplicate email",
+	// 		Data:    nil,
+	// 	})
+	// }
 
 	//validations
 	if ownersReg.Name == "" || ownersReg.Age == "" || ownersReg.NoHp == "" || ownersReg.Dob == "" ||
@@ -68,16 +67,16 @@ func OwnersRegisterController(c echo.Context) error {
 	ownersData.Email = ownersReg.Email
 	ownersData.Password = ownersReg.Password
 
-	err := ownersData.BeforeSave(config.DB)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// err := ownersData.BeforeSave(config.DB)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	result := config.DB.Create(&ownersData)
 	if result.Error != nil {
-		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
-			Code:    http.StatusInternalServerError,
-			Message: "there's mistake when input data",
+		return c.JSON(http.StatusBadRequest, models.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "duplicate email",
 			Data:    nil,
 		})
 	}
@@ -101,24 +100,24 @@ func OwnersLoginController(c echo.Context) error {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return c.JSON(http.StatusForbidden, models.BaseResponse{
 				Code:    http.StatusForbidden,
-				Message: "owner not found",
+				Message: "Owner not found",
 				Data:    nil,
 			})
 		} else {
 			return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 				Code:    http.StatusInternalServerError,
-				Message: "Server error",
+				Message: "There's error in server",
 				Data:    nil,
 			})
 		}
 	}
 
-	if !encrypt.CheckPasswordHash(ownersLogin.Password, owners.Password) {
-		return c.JSON(http.StatusForbidden, models.BaseResponse{
-			Code:    http.StatusForbidden,
-			Message: "password didnt match",
-		})
-	}
+	// if !encrypt.CheckPasswordHash(ownersLogin.Password, owners.Password) {
+	// 	return c.JSON(http.StatusForbidden, models.BaseResponse{
+	// 		Code:    http.StatusForbidden,
+	// 		Message: "password didnt match",
+	// 	})
+	// }
 
 	token, err := middlewares.GenerateTokenOwnersJWT(owners.Id)
 	if err != nil {
@@ -128,7 +127,6 @@ func OwnersLoginController(c echo.Context) error {
 			Data:    nil,
 		})
 	}
-
 	ownersJwt := owner.OwnersResponse{
 		Id:      owners.Id,
 		Name:    owners.Name,

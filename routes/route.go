@@ -1,24 +1,24 @@
 package routes
 
 import (
-	"final_project/belee/controllers"
-	// "belee/middlewares"
+	"belee/constant"
+	"belee/controllers"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func NewRoutes() *echo.Echo {
 	e := echo.New()
-	// e.Use(middleware.Logger())
-	// e.Use(middleware.JWT([]byte("secret")))
-	// jwtBuyer := middleware.JWT([]byte(constant.SECRET_JWT_BUYERS))
-	// jwtOwner := middleware.JWT([]byte(constant.SECRET_JWT_OWNERS))
+
+	jwtBuyer := middleware.JWT([]byte(constant.SECRET_JWT_BUYERS))
+	jwtOwner := middleware.JWT([]byte(constant.SECRET_JWT_OWNERS))
 
 	//buyers
 	buyers := e.Group("api/v1/buyers")
 	buyers.POST("/login", controllers.LoginController)
 	buyers.POST("/register", controllers.RegisterController)
-	buyers.GET("/:buyersId", controllers.DetailsBuyers)
+	buyers.GET("/:buyersId", controllers.DetailsBuyers, jwtBuyer)
 
 	//owners
 	owners := e.Group("api/v1/owners")
@@ -32,18 +32,18 @@ func NewRoutes() *echo.Echo {
 	products.GET("", controllers.GetProducts)
 	products.GET("/:productsName", controllers.DetailsProducts)
 	// hanya owners
-	products.POST("/add", controllers.CreateProducts)
-	products.PUT("/update/:productsId", controllers.UpdateProducts)
-	products.DELETE("/delete/:productsId", controllers.DeleteProducts)
+	products.POST("/add", controllers.CreateProducts, jwtOwner)
+	products.PUT("/update/:productsId", controllers.UpdateProducts, jwtOwner)
+	products.DELETE("/delete/:productsId", controllers.DeleteProducts, jwtOwner)
 
 	//warungs
 	warung := e.Group("api/v1/warungs")
 	warung.GET("", controllers.GetWarung)
 	warung.GET("/:warungId", controllers.GetDetailsWarung)
 	// hanya owner
-	warung.POST("/add", controllers.AddWarung)
-	warung.PUT("/update/:warungId", controllers.UpdateWarung)
-	warung.DELETE("/delete/:warungId", controllers.DeleteWarung)
+	warung.POST("/add", controllers.AddWarung, jwtOwner)
+	warung.PUT("/update/:warungId", controllers.UpdateWarung, jwtOwner)
+	warung.DELETE("/delete/:warungId", controllers.DeleteWarung, jwtOwner)
 
 	// transactions
 	transaction := e.Group("api/v1/transactions")
