@@ -22,9 +22,9 @@ jobs:
     - name: setting gopath
       run: |
         pwd
-        echo ${GOPATH}
+        echo ${GOROOT}
       env:
-        GOPATH: /opt/hostedtoolcache/go/1.16.8/x64/src/belee
+        GOROOT: /opt/hostedtoolcache/go/1.16.8/x64/src/belee
     - name: running unit test
       run: go test ./... -cover
   
