@@ -41,7 +41,7 @@ func CreateProducts(c echo.Context) error {
 			Data:    nil,
 		})
 	}
-	config.DB.Preload("buyers").First(&warung, "id = ?", productsdata.WarungID)
+	config.DB.Preload("warungs").First(&warung, "id = ?", productsdata.WarungID)
 	config.DB.Preload("products").First(&producttype, "id = ?", productsdata.BarangTypeID)
 
 	response := products.ProductResponse{

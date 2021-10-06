@@ -118,7 +118,7 @@ func OwnersLoginController(c echo.Context) error {
 	// 	})
 	// }
 
-	token, err := middlewares.GenerateTokenBuyersJWT(owners.Id)
+	token, err := middlewares.GenerateTokenOwnersJWT(owners.Id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
 			Code:    http.StatusInternalServerError,

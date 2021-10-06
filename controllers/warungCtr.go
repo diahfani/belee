@@ -50,6 +50,7 @@ func AddWarung(c echo.Context) error {
 	config.DB.Preload("owners").First(&owners, "id = ?", warungdata.OwnersID)
 
 	response := warung.WarungRes{
+		Id:        warungdata.Id,
 		Owner:     &owners,
 		Name:      warungdata.Name,
 		Address:   warungdata.Address,
@@ -79,6 +80,7 @@ func GetDetailsWarung(c echo.Context) error {
 	config.DB.Preload("owners").First(&owners, "id = ?", warungs.OwnersID)
 
 	response := warung.WarungRes{
+		Id:        warungs.Id,
 		Owner:     &owners,
 		Name:      warungs.Name,
 		Address:   warungs.Address,

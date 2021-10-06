@@ -6,6 +6,7 @@ import (
 )
 
 type WarungRes struct {
+	Id        int           `json:"id"`
 	Owner     *owner.Owners `json:"owner"`
 	Name      string        `json:"name"`
 	Address   string        `json:"address"`

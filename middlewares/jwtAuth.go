@@ -42,7 +42,7 @@ func GenerateTokenOwnersJWT(id int) (string, error) {
 	claims := JwtClaims{
 		id,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Local().Add(time.Hour * 1).Unix(),
+			ExpiresAt: time.Now().Local().Add(time.Hour * 2).Unix(),
 		},
 	}
 	// fmt.Println(claims)
@@ -77,7 +77,7 @@ func GetClaimsOwners(c echo.Context) (int, error) {
 		ownersJwt := owners.(*jwt.Token)
 		if ownersJwt.Valid {
 			claims := ownersJwt.Claims.(jwt.MapClaims)
-			ownersId := claims["buyersId"].(float64)
+			ownersId := claims["ownersId"].(float64)
 			return int(ownersId), nil
 		}
 	}
