@@ -35,7 +35,7 @@ func TestAddWarungSuccess(t *testing.T) {
 		"name":"toko hamida",
 		"address":"jakarta"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/warungs/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/warungs", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()

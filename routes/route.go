@@ -32,33 +32,33 @@ func NewRoutes() *echo.Echo {
 	products.GET("", controllers.GetProducts)
 	products.GET("/:productsName", controllers.DetailsProducts)
 	// hanya owners
-	products.POST("/add", controllers.CreateProducts, jwtOwner)
-	products.PUT("/update/:productsId", controllers.UpdateProducts, jwtOwner)
-	products.DELETE("/delete/:productsId", controllers.DeleteProducts, jwtOwner)
+	products.POST("", controllers.CreateProducts, jwtOwner)
+	products.PUT("/:productsId", controllers.UpdateProducts, jwtOwner)
+	products.DELETE("/:productsId", controllers.DeleteProducts, jwtOwner)
 
 	//warungs
 	warung := e.Group("api/v1/warungs")
 	warung.GET("", controllers.GetWarung)
 	warung.GET("/:warungId", controllers.GetDetailsWarung)
 	// hanya owner
-	warung.POST("/add", controllers.AddWarung, jwtOwner)
-	warung.PUT("/update/:warungId", controllers.UpdateWarung, jwtOwner)
+	warung.POST("", controllers.AddWarung, jwtOwner)
+	warung.PUT("/:warungId", controllers.UpdateWarung, jwtOwner)
 	warung.DELETE("/delete/:warungId", controllers.DeleteWarung, jwtOwner)
 
 	// transactions
 	transaction := e.Group("api/v1/transactions")
-	transaction.POST("/add", controllers.AddTransaction)
+	transaction.POST("", controllers.AddTransaction)
 	transaction.GET("/:transactionId", controllers.DetailsTransaction)
-	transaction.DELETE("/delete/:transactionId", controllers.DeleteTransaction)
+	transaction.DELETE("/:transactionId", controllers.DeleteTransaction)
 
 	//paymentMethod
 	payment := e.Group("api/v1/payment")
-	payment.POST("/add", controllers.AddPayment)
+	payment.POST("", controllers.AddPayment)
 	payment.GET("", controllers.GetPayment)
 
 	//productsType
 	typeProducts := e.Group("api/v1/typeProducts")
-	typeProducts.POST("/add", controllers.AddProductType)
+	typeProducts.POST("", controllers.AddProductType)
 	typeProducts.GET("", controllers.GetProductType)
 	typeProducts.GET("/:pTypeId", controllers.GetDetailsProductsType)
 

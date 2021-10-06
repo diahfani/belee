@@ -45,8 +45,8 @@ func CreateProducts(c echo.Context) error {
 	config.DB.Preload("products").First(&producttype, "id = ?", productsdata.BarangTypeID)
 
 	response := products.ProductResponse{
-		Id:         productsdata.Id,
-		Warung:     &warung,
+		Id: productsdata.Id,
+		// Warung:     &warung,
 		BarangType: &producttype,
 		BarangName: productsdata.BarangName,
 		Qty:        productsdata.Qty,

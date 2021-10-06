@@ -1,17 +1,17 @@
 {
     "debug": true,
     "server": {
-        "address": ":8000"
+        "address": ":8080"
     },
     "context": {
         "timeout": 2
     },
     "database": {
-        "host": "127.0.0.1",
-        "port": "3308",
-        "user": "root",
-        "pass": "diahaufa123",
-        "name": "belee_test"
+        "host": "db-belee.cxinhvzfptwa.us-east-2.rds.amazonaws.com",
+        "port": "3306",
+        "user": "admin0110",
+        "pass": "admin0110",
+        "name": "db-belee"
     },
     "jwt": {
         "secret": "diahaufa0110",

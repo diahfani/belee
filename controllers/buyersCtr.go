@@ -1,17 +1,17 @@
 package controllers
 
 import (
+	"belee/config"
+	"belee/handler/encrypt"
+	"belee/models"
+	"belee/models/buyer"
 	"errors"
-	"final_project/belee/config"
-	"final_project/belee/handler/encrypt"
-	"final_project/belee/models"
-	"final_project/belee/models/buyer"
 	"strconv"
 
 	// "belee/models/buyers"
 	"net/http"
 
-	"final_project/belee/middlewares"
+	"belee/middlewares"
 	// "belee/models/buyer"
 
 	"github.com/labstack/echo/v4"
