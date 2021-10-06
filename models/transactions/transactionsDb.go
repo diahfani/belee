@@ -14,7 +14,7 @@ type Transactions struct {
 	// Warung       warung.Warungs               `json:"warung" gorm:"foreignKey:WarungID"`
 	BarangID int `json:"barangId" gorm:"not null"`
 	// Barang       products.Products            `json:"barang" gorm:"foreignKey:BarangID"`
-	PaymentID int `json:"paymentId" gorm:"not null"`
+	PaymentID int `gorm:"foreignKey:TransactionsId;not null"`
 	// Payment      paymentMethod.PaymentMethods `json:"payment" gorm:"foreignKey:PaymentID"`
 	ProductsName string    `json:"productsname" gorm:"not null"`
 	TotalQty     int       `json:"totalqty" gorm:"not null"`

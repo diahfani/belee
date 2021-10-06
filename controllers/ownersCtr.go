@@ -150,7 +150,7 @@ func DetailsOwners(c echo.Context) error {
 	var owners owner.Owners
 	ownerID, _ := strconv.Atoi(c.Param("ownersId"))
 
-	if err := config.DB.Where("id = ?", ownerID).Error; err != nil {
+	if err := config.DB.Where("id = ?", ownerID).First(&owners).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "record not found",
@@ -159,7 +159,7 @@ func DetailsOwners(c echo.Context) error {
 	}
 	// config.DB.Preload("Warung").Find(&owners)
 	// var warung warung.Warungs
-	// config.DB.Where("id = ?", owners.Id).Preload("Warungs").First(&warung)
+	// config.DB.Where("id = ?", owners.Id).First(&owners)
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success get data",
