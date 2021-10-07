@@ -43,7 +43,7 @@ jobs:
     
     - name: running unit test
       run: |
-        cd ./go/src/github.com/diahfani/belee/controllers
+        cd ./opt/hostedtoolcache/go/1.17.1/x64/src/belee
         go mod init belee
         go mod tidy
         go test ./... -cover
