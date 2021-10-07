@@ -80,9 +80,17 @@ func GetProducts(c echo.Context) error {
 }
 
 func UpdateProducts(c echo.Context) error {
-	var products products.Products
-	productsId, err := strconv.Atoi(c.Param("productsId"))
-	if err != nil {
+	var product products.Products
+	// productsId, err := strconv.Atoi(c.Param("productsId"))
+	// if err != nil {
+	// 	return c.JSON(http.StatusBadRequest, models.BaseResponse{
+	// 		Code:    http.StatusBadRequest,
+	// 		Message: "param not valid",
+	// 		Data:    nil,
+	// 	})
+	// }
+	productsId := c.Param("productsId")
+	if err := config.DB.Where("id = ?", productsId).First(&product).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "param not valid",
@@ -90,7 +98,7 @@ func UpdateProducts(c echo.Context) error {
 		})
 	}
 
-	result := config.DB.First(&products, productsId)
+	result := config.DB.First(&product, productsId)
 	if result.Error != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
@@ -99,8 +107,8 @@ func UpdateProducts(c echo.Context) error {
 		})
 	}
 
-	c.Bind(&products)
-	result = config.DB.Save(&products)
+	c.Bind(&product)
+	result = config.DB.Save(&product)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, models.BaseResponse{
 			Code:    http.StatusInternalServerError,
@@ -112,7 +120,7 @@ func UpdateProducts(c echo.Context) error {
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "success update data",
-		Data:    &products,
+		Data:    &product,
 	})
 }
 
