@@ -28,33 +28,33 @@ jobs:
   #       path: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
 
 
-  unit-test:
-    name: "unit test"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: set up go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
+  # unit-test:
+  #   name: "unit test"
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: set up go
+  #     uses: actions/setup-go@v2
+  #     with:
+  #       go-version: 1.17
 
-    # - uses: actions/checkout@v2
-    #   uses: actions/setup-go@v2
-    #   with:
+  #   # - uses: actions/checkout@v2
+  #   #   uses: actions/setup-go@v2
+  #   #   with:
         
-    # - name: checkout code into the go module directory
+  #   # - name: checkout code into the go module directory
     
-    # - name: run go mod init
-    #   run: |
-    #     cd ..
-    #     go mod init belee
+  #   # - name: run go mod init
+  #   #   run: |
+  #   #     cd ..
+  #   #     go mod init belee
 
-    # - name: run go mod tidy
-    #   run:
-    #     go mod tidy
+  #   # - name: run go mod tidy
+  #   #   run:
+  #   #     go mod tidy
 
-    - name: running unit test
-      run: go test ./... -cover
+  #   - name: running unit test
+  #     run: go test ./... -cover
   
   build-push-docker:
     name: "build image and push to registry"
