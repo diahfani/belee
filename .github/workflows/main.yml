@@ -31,9 +31,12 @@ jobs:
         fetch-depth: 1
         path: src
     - name: run go mod init
-      run: |
+      run:
         go mod init belee
-        go mod tidy
+    
+    - name: run go mod tidy
+      run:
+        go mod init belee
 
     - name: running unit test
       run: go test ./... -cover
