@@ -6,10 +6,10 @@ name: Running unit test, build docker image, push to docker hub and deploy to EC
 on:
   push:
     branches:
-      - 'feature/mvc'
+      - 'master'
   pull_request:
     branches:
-      - 'feature/mvc'
+      - 'master'
 
 jobs:
   
@@ -32,6 +32,7 @@ jobs:
     name: "unit test"
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: set up go
       uses: actions/setup-go@v2
       with:
@@ -42,7 +43,6 @@ jobs:
     #   with:
         
     # - name: checkout code into the go module directory
-    #   uses: actions/checkout@v2
     
     # - name: run go mod init
     #   run: |
