@@ -1,4 +1,6 @@
 # contoh github workflow untuk github actions (CI)
+
+
 name: Running unit test, build docker image, push to docker hub and deploy to EC2
 
 on:
@@ -14,11 +16,21 @@ jobs:
     name: "unit test"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up go
+    - name: set up go
       uses: actions/setup-go@v2
       with:
         go-version: 1.16
+
+    # - uses: actions/checkout@v2
+    #   uses: actions/setup-go@v2
+    #   with:
+        
+    - name: checkout code into the go module directory
+      use: actions/checkout@v2
+      with:
+        fetch-depth: 1
+        path: src/belee/config
+
     - name: running unit test
       run: go test ./... -cover
   
