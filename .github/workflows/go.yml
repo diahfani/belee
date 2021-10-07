@@ -7,24 +7,65 @@ on:
     branches: [ master ]
 
 jobs:
-  gopath:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    env:
-      GOPATH: ${{ github.workspace }}
-      package: github.com/diahfani/belee # your package's preferred path
     steps:
-      - uses: actions/setup-go@v2
-        with:
-          go-version: 1.17 # Change this to whatever you need
-      - uses: actions/checkout@v2
-        with:
-          path: src/belee
-      - name: Dependencies
-        run: go get -t -d -v ${{ env.package }}/...
-      - name: Build
-        run: go build ${{ env.package }}
-      - name: Test
-        run: go test -v ${{ env.package }}/...
+
+    - name: Set up Go 1.12
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    
+    - name: Debug
+      run: |
+        pwd
+        echo ${GOPATH}
+        echo ${GOROOT}
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+        path: go/src/github.com/diahfani/belee
+    - name: Debug
+      run: |
+        pwd
+        echo ${HOME}
+        echo ${GITHUB_WORKSPACE}
+        echo ${GOPATH}
+        echo ${GOROOT}
+      env:
+        GOPATH: /home/runner/work/belee/belee
+    
+    - name: Test
+      run: |
+        go get -u golang.org/x/tools/cmd/cover
+        go get -u golang.org/x/net/context
+        go get -u golang.org/x/net/context/ctxhttp
+        go get -u github.com/golang/protobuf/proto
+        go get -u github.com/golang/protobuf/protoc-gen-go
+        go test -cover $(go list ./... | grep -v /vendor/)
+      env:
+        GOPATH: /home/runner/work/belee/belee
+# jobs:
+#   gopath:
+#     runs-on: ubuntu-latest
+#     env:
+#       GOPATH: ${{ github.workspace }}
+#       package: github.com/diahfani/belee # your package's preferred path
+#     steps:
+#       - uses: actions/setup-go@v2
+#         with:
+#           go-version: 1.17 # Change this to whatever you need
+#       - uses: actions/checkout@v2
+#         with:
+#           path: src/belee
+#       - name: Dependencies
+#         run: go get -t -d -v ${{ env.package }}/...
+#       - name: Build
+#         run: go build ${{ env.package }}
+#       - name: Test
+#         run: go test -v ${{ env.package }}/...
 
 
   # build:
