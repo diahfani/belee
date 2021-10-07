@@ -32,8 +32,9 @@ func NewRoutes() *echo.Echo {
 	products.GET("/:productsName", controllers.DetailsProducts)
 	// hanya owners
 	products.POST("", controllers.CreateProducts, jwtOwner)
-	products.PUT("/:productsId", controllers.UpdateProducts, jwtOwner)
-	products.DELETE("/:productsId", controllers.DeleteProducts, jwtOwner)
+	// masih bermasalah
+	products.PUT("/:productsid", controllers.UpdateProducts, jwtOwner)
+	products.DELETE("/:productsid", controllers.DeleteProducts, jwtOwner)
 
 	//warungs
 	warung := e.Group("api/v1/warungs")

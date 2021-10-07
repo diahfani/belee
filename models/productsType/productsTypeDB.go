@@ -5,7 +5,8 @@ import (
 )
 
 type ProductsType struct {
-	Id int `json:"id" gorm:"primaryKey"`
+	Id         int `json:"id" gorm:"primaryKey"`
+	ProductsID int `json:"productsId"`
 	// ProductsID []products.Products `gorm:"foreignKey:BarangTypeID"`
 	NameType  string    `json:"nametype"`
 	CreatedAt time.Time `json:"createdAt"`

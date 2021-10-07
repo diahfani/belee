@@ -81,7 +81,7 @@ func GetProducts(c echo.Context) error {
 
 func UpdateProducts(c echo.Context) error {
 	var products products.Products
-	productsId, err := strconv.Atoi(c.Param("productsId"))
+	productsId, err := strconv.Atoi(c.Param(""))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.BaseResponse{
 			Code:    http.StatusBadRequest,
@@ -114,6 +114,7 @@ func UpdateProducts(c echo.Context) error {
 		Message: "success update data",
 		Data:    &products,
 	})
+
 }
 
 func DeleteProducts(c echo.Context) error {
