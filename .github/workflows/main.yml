@@ -59,7 +59,7 @@ jobs:
   build-push-docker:
     name: "build image and push to registry"
     runs-on: ubuntu-latest
-    needs: unit-test
+    # needs: unit-test
     steps:
     - uses: actions/checkout@v2
     - name: build docker
