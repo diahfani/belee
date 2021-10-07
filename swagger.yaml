@@ -1,0 +1,962 @@
+openapi: 3.0.0
+info:
+  description: Belee documentation API
+  version: "1.0.0"
+  title: Beleee
+  contact:
+    email: diahaufaarini5@gmail.com
+  
+tags:
+  - name: Buyers
+    description: Buyers Api
+  - name: Owners
+    description: Owners API
+  - name: Transactions
+    description: Transactions API
+  - name: Products
+    description: Products API
+  - name: ProductsTypes
+    description: Products Type API
+  - name: Warungs
+    description: Warungs API
+  - name: PaymentMethods
+    description: Payment Methods API
+  - name: TransactionItems
+    description: Transaction Items API
+      
+paths:
+# register buyers
+  /register:
+    post:
+      tags:
+        - Buyers
+        - Owners
+      summary: Register buyers and owners
+      description: |
+        send some data for register
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: diah
+                age:
+                  type: integer
+                  example: 21
+                nohp:
+                  type: integer
+                  example: 085790023450
+                dob:
+                  type: integer
+                  format: int64
+                  # format: date-time
+                  example: 2000-10-01
+                email:
+                  type: string
+                  format: email
+                  example: diahaufa@gmail.com
+                password:
+                  type: string
+                  example: diah0987
+      responses:
+        200:
+          description: berhasil membuat buyers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "succeed"
+                  data:
+                    $ref: "#/components/schemas/Buyers"
+  
+  # buyers login
+  /login:
+    post:
+      tags:
+        - Buyers
+        - Owners
+      summary: Login buyers
+      description: |
+        send some data for register
+      parameters: 
+        - name: email
+          in: query
+          description: email input
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: password input
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: login buyer berhasil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "OK"
+                  data:
+                    $ref: "#/components/schemas/Login"
+
+  /warung:
+    post:
+      tags:
+        - Warungs
+      summary: add warung
+      description: |
+        send some data for register
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ownersId:
+                  type: string
+                  example: 1
+                name:
+                  type: string
+                  example: "diah"
+                address:
+                  type: string
+                  example: "bekasi"
+      responses:
+        200:
+          description: berhasil menambahkan warung
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success add warung"
+                  data:
+                    $ref: "#/components/schemas/Warungs"
+                    
+  /:warungId:
+    get:
+      tags:
+        - Warungs
+      description: get warung by id
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/Warungs"
+  
+  /:
+    get:
+      tags:
+        - Warungs
+      description: get all warung
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/Warungs"
+
+
+    put:
+      tags:
+        - Warungs
+      summary: Update an warung
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "diah"
+                address:
+                  type: string
+                  example: "diah"
+                updatedAt:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: success update data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success update data"
+                  data:
+                    $ref: "#/components/schemas/Warungs"
+  
+    delete:
+      tags:
+        - Warungs
+      summary: Deletes warung
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success update data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success delete data"
+  
+  /products:
+    post:
+      tags:
+        - Products
+      summary: add products
+      description: |
+        send some data for register
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                warungId:
+                  type: integer
+                  example: 1
+                barangTypeId:
+                  type: integer
+                  example: 1
+                name:
+                  type: string
+                  example: "milo"
+                qty:
+                  type: integer
+                  example: 20
+                price:
+                  type: number
+                  example: 1500
+      responses:
+        200:
+          description: berhasil menambahkan products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success add warung"
+                  data:
+                    $ref: "#/components/schemas/Products"
+     
+    get:
+      tags:
+        - Warungs
+      description: get all warung
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/Warungs"
+                   
+  /:productsid:
+    get:
+      tags:
+        - Products
+      description: get products by id
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/Warungs"
+
+    put:
+      tags:
+        - Warungs
+      summary: Update an warung
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                warungId:
+                  type: integer
+                  example: 1
+                barangTypeId:
+                  type: integer
+                  example: 1
+                name:
+                  type: string
+                  example: "milo"
+                qty:
+                  type: integer
+                  example: 20
+                price:
+                  type: number
+                  example: 1500
+      responses:
+        '200':
+          description: success update data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success update data"
+                  data:
+                    $ref: "#/components/schemas/Products"
+  
+    delete:
+      tags:
+        - Warungs
+      summary: Deletes warung
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success update data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success delete data"
+  
+  /transactions:
+    post:
+      tags:
+        - Transactions
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                buyerId:
+                  type: integer
+                  example: 1
+                warungId:
+                  type: integer
+                  example: 1
+                barangId:
+                  type: integer
+                  example: 1
+                paymentId:
+                  type: integer
+                  example: 1
+                productsname:
+                  type: string
+                  example: milo
+                totalqty:
+                  type: integer
+                  example: 1
+                totalprice:
+                  type: number
+                  example: 2000
+      responses:
+        '200':
+          description: berhasil menambahkan transaksi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success add transactions"
+                  data:
+                    $ref: "#/components/schemas/Transactions"
+                    
+    get:
+      tags:
+        - Transactions
+      description: get productsType by id
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/Transactions"
+  /:trid:
+    get:
+      tags:
+        - Transactions
+      description: get productsType by id
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/Transactions"
+    delete:
+      tags:
+        - Transactions
+      summary: Delete transaksi
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success update data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success delete data"
+      
+  
+  /paymentMethods:
+    post:
+      tags:
+        - PaymentMethods
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: cash
+      responses:
+        '200':
+          description: berhasil menambahkan payment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success add payment"
+                  data:
+                    $ref: "#/components/schemas/PaymentMethods"
+    get:
+      tags:
+        - PaymentMethods
+      description: get all payment
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/PaymentMethods"
+  /productsTypes:
+    post:
+      tags:
+        - ProductsTypes
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nametype:
+                  type: string
+                  example: minuman
+      responses:
+        '200':
+          description: berhasil menambahkan payment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success add payment"
+                  data:
+                    $ref: "#/components/schemas/ProductsType"
+    
+  /:id:
+    get:
+      tags:
+        - ProductsTypes
+      description: get productsType by id
+      parameters:
+        - name: id
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/ProductsType" 
+   
+  /productsType:
+    get:
+      tags:
+        - ProductsTypes
+      description: get all payment
+      responses:
+        '200':
+          description: success get data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "success get data"
+                  data:
+                    $ref: "#/components/schemas/PaymentMethods"
+
+  
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      
+  schemas:
+  # Login
+    Login:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          
+    # buyers
+    Buyers:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        age:
+          # harusnya int typenya
+          type: integer
+        nohp:
+          # harusnya int typenya
+          type: integer
+          format: int64
+          example: 085890002456
+        dob:
+          # typenya harusnya date sih
+          type: integer 
+          format: int64
+        address:
+          type: string
+        email:
+          type: string
+        password:
+          type : string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  # owners
+    Owners:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        warungID:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: diah
+        age:
+          # harusnya int typenya
+          type: string
+          example: 12
+        nohp:
+          # harusnya int typenya
+          type: string
+          example: 085890002456
+        dob:
+          # typenya harusnya date sih
+          type: string 
+          example: 2000-10-01
+        address:
+          type: string
+          example: tokyo
+        email:
+          type: string
+          example: diahaufa@gmail.com
+        password:
+          type : string
+          example: 123
+        created_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+        updated_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+
+    #Products 
+    Products:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        warungID:
+          type: integer
+          example: 1
+        barangTypeID:
+          $ref: '#/components/schemas/ProductsType'
+        warungName:
+          type: string
+          example: toko hamida
+        productsName:
+          type: string
+          example: milo
+        qty:
+          type: integer
+          example: 100
+        price:
+          type: number
+          example: 2500.0
+        created_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+        updated_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+          
+    #Transactions 
+    Transactions:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        warundID:
+          type: integer
+          example: 1
+        paymentID:
+          $ref: '#/components/schemas/PaymentMethods'
+          # type: integer
+          # example: 1
+        productsName:
+          type: string
+          example: milo
+        totalQty:
+          type: integer
+          example: 1
+        totalPrice:
+          type: number
+          example: 2500.0
+        created_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+        status:
+          type: string
+          description: payment status
+          enum:
+            - lunas
+            - tidak lunas
+    
+    # Payment Methods
+    PaymentMethods:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        namePayment:
+          type: string
+          example: e-wallet
+    
+    # Products Type
+    ProductsType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nameType:
+          type: string
+          example: minuman
+    
+    # TransactionItems
+    # TransactionItems:
+    #   type: object
+    #   properties:
+    #     transactionID:
+    #       type: integer
+    #       example: 1
+    #     productsID:
+    #       type: integer
+    #       example: 1
+    #     productsName:
+    #       type: string
+    #       example: milo
+    #     totalQty:
+    #       type: integer
+    #       example: 1
+    #     totalPrice:
+    #       type: number
+    #       example: 2500.0
+    #     created_at:
+    #       type: string
+    #       format: date-time
+    #       example: 2021-08-09T12:02:57Z
+          
+    # warung
+    Warungs:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        owner:
+          $ref: '#/components/schemas/Owners'
+        name:
+          type: string
+          example: warung mama ida
+        address:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+  
+
+# security:
+#   - bearerAuth: []
+#   #   api_key:
+#   #     type: apiKey
+#   #     name: api_key
+#   #     in: header
+# servers:
+#   # Added by API Auto Mocking Plugin
+#   - description: SwaggerHub API Auto Mocking
+#     url: https://virtserver.swaggerhub.com/diahfani/beleee/1.0.0
