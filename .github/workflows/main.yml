@@ -34,7 +34,7 @@ jobs:
       run: go mod init belee
 
     - name: running unit test
-      run: go test ./... -cover
+      run: go test ./controllers -cover
   
   build-push-docker:
     name: "build image and push to registry"
