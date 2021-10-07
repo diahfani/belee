@@ -35,7 +35,7 @@ jobs:
         echo ${GOPATH}
         echo ${GOROOT}
       env:
-        GOPATH: ~/home/runner/work
+        GOPATH: /home/runner/work
     
     - name: Test
       run: |
@@ -47,7 +47,7 @@ jobs:
         go mod tidy
         go test -cover $(go list ./... | grep -v /vendor/)
       env:
-        GOPATH: ~/home/runner/work/
+        GOPATH: /home/runner/work/
 # jobs:
 #   gopath:
 #     runs-on: ubuntu-latest
