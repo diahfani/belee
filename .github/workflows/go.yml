@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ master ]
 
-name: Running Unit Test, Build Docker Image,  Push To Docker Hub and Deploy To EC2
+name: Unit Test, Build Docker Image,  Push To Docker Hub and Deploy To EC2
 
 on:
   pull_request:
