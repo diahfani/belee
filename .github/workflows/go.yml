@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GOPATH: ${{ github.workspace }}
-      package: github.com/diahfani/belee # your package's preferred path
+      package: belee # your package's preferred path
     steps:
       - uses: actions/setup-go@v2
         with:
