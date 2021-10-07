@@ -14,70 +14,45 @@ on:
 jobs:
   
 
-  # test-gopath:
-  #   env:
-  #     GOPATH: ${{ github.workspace }}
-  #     GO111MODULE: off
-  #   defaults:
-  #     run:
-  #       working-directory: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
-  #     with:
-  #       path: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
-
-
-  # unit-test:
-  #   name: "unit test"
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: set up go
-  #     uses: actions/setup-go@v2
-  #     with:
-  #       go-version: 1.17
-
-  #   # - uses: actions/checkout@v2
-  #   #   uses: actions/setup-go@v2
-  #   #   with:
-        
-  #   # - name: checkout code into the go module directory
-    
-  #   # - name: run go mod init
-  #   #   run: |
-  #   #     cd ..
-  #   #     go mod init belee
-
-  #   # - name: run go mod tidy
-  #   #   run:
-  #   #     go mod tidy
-
-  #   - name: running unit test
-  #     run: go test ./... -cover
-  build:
-    runs-on: ubuntu-latest
+  test-gopath:
+    env:
+      GOROOT: ${{ github.workspace }}
+      GO111MODULE: off
+    defaults:
+      run:
+        working-directory: ${{ env.GOROOT }}/src/belee
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        path: ${{ env.GOROOT }}/src/belee
 
-    - name: Set up Go
+    - name: setup go
+      runs-on: ubuntu-latest
+      steps:
+    - uses: actions/checkout@v2
+    - name: set up go
       uses: actions/setup-go@v2
       with:
         go-version: 1.17
 
-      
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    # - uses: actions/checkout@v2
+    #   uses: actions/setup-go@v2
+    #   with:
+        
+    # - name: checkout code into the go module directory
+    
+    # - name: run go mod init
+    #   run: |
+    #     cd ..
+    #     go mod init belee
 
-    - name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: 2010010700/belee
+    # - name: run go mod tidy
+    #   run:
+    #     go mod tidy
+    unit-test:
+    - name: running unit test
+      run: go test ./... -cover
 
   # build-push-docker:
   #   name: "build image and push to registry"
