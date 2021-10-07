@@ -42,9 +42,10 @@ jobs:
     
     - name: running unit test
       run: |
+        cd ./go/src/github.com/diahfani/belee/controllers
         go mod init belee
         go mod tidy
-        go test ./go/src/github.com/diahfani/belee/controllers -cover
+        go test ./controllers -cover
   
     # - uses: actions/checkout@v2
     #   uses: actions/setup-go@v2
