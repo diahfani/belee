@@ -39,6 +39,7 @@ jobs:
         echo ${GOROOT}
       env:
         GOPATH: /home/runner/work/belee/belee
+        GO111MODULE: off
     
     - name: running unit test
       run: |
