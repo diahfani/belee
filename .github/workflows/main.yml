@@ -45,7 +45,7 @@ jobs:
         cd ./go/src/github.com/diahfani/belee/controllers
         go mod init belee
         go mod tidy
-        go test ./controllers -cover
+        go test ./... -cover
     # - uses: actions/checkout@v2
     #   uses: actions/setup-go@v2
     #   with:
