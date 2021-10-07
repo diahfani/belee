@@ -27,11 +27,10 @@ jobs:
         
     - name: checkout code into the go module directory
       uses: actions/checkout@v2
-      run:
-        cd ..
     
     - name: run go mod tidy
-      run:
+      run: |
+        cd ..
         go mod tidy
 
     - name: running unit test
