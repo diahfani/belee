@@ -43,7 +43,7 @@ func NewRoutes() *echo.Echo {
 	// hanya owner
 	warung.POST("", controllers.AddWarung, jwtOwner)
 	warung.PUT("/:warungId", controllers.UpdateWarung, jwtOwner)
-	warung.DELETE("/delete/:warungId", controllers.DeleteWarung, jwtOwner)
+	warung.DELETE("/:warungId", controllers.DeleteWarung, jwtOwner)
 
 	// transactions
 	transaction := e.Group("api/v1/transactions")
