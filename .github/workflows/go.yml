@@ -43,7 +43,8 @@ jobs:
         go get -u golang.org/x/net/context
         go get -u golang.org/x/net/context/ctxhttp
         go get -u github.com/golang/protobuf/proto
-        go get -u github.com/golang/protobuf/protoc-gen-go
+        go mod init belee
+        go mod tidy
         go test -cover $(go list ./... | grep -v /vendor/)
       env:
         GOPATH: /home/runner/work/belee/belee
