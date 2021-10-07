@@ -7,21 +7,40 @@ on:
     branches: [ master ]
 
 jobs:
-
-  build:
+  gopath:
     runs-on: ubuntu-latest
+    env:
+      GOPATH: ${{ github.workspace }}
+      package: github.com/diahfani/belee # your package's preferred path
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17 # Change this to whatever you need
+      - uses: actions/checkout@v2
+        with:
+          path: src/${{ env.package }}
+      - name: Dependencies
+        run: go get -t -d -v ${{ env.package }}/...
+      - name: Build
+        run: go build ${{ env.package }}
+      - name: Test
+        run: go test -v ${{ env.package }}/...
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
 
-    - name: Build
-      run: go build -v ./...
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
 
-    - name: Test
-      run: go test -v ./...
-    - name: Setup Go environment
-      uses: actions/setup-go@v2.1.4
+  #   - name: Set up Go
+  #     uses: actions/setup-go@v2
+  #     with:
+  #       go-version: 1.17
+
+  #   - name: Build
+  #     run: go build -v ./...
+
+  #   - name: Test
+  #     run: go test -v ./...
+  #   - name: Setup Go environment
+  #     uses: actions/setup-go@v2.1.4
