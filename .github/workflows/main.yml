@@ -28,9 +28,13 @@ jobs:
     - name: checkout code into the go module directory
       uses: actions/checkout@v2
     
-    - name: run go mod tidy
+    - name: run go mod init
       run: |
         cd ..
+        go mod init belee
+
+    - name: run go mod tidy
+      run:
         go mod tidy
 
     - name: running unit test
