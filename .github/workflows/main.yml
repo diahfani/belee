@@ -26,7 +26,7 @@ jobs:
     #   with:
         
     - name: checkout code into the go module directory
-      use: actions/checkout@v2
+      uses: actions/checkout@v2
       with:
         fetch-depth: 1
         path: src/belee/config
