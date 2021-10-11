@@ -12,33 +12,46 @@ on:
       - 'master'
 
 jobs:
+
+jobs:
   unit-test:
-    name: "do unit testing"
+    name: "unit test"
     runs-on: ubuntu-latest
     steps:
-    - name: set up go
+    - uses: actions/checkout@v2  
+    - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
-    - name: test gopath
-      env:
-        GOPATH: ${{ github.workspace }}
-        GO111MODULE: off
-      defaults:
-        run:
-        working-directory: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
+        go-version: 1.16
+    - name: running unit test
+      run: go test ./... -cover
+  # unit-test:
+  #   name: "do unit testing"
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: set up go
+  #     uses: actions/setup-go@v2
+  #     with:
+  #       go-version: 1.17
+  #   - name: test gopath
+  #     env:
+  #       GOPATH: ${{ github.workspace }}
+  #       GO111MODULE: off
+  #     defaults:
+  #       run:
+  #       working-directory: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
 
 
-    # - name: Debug
-    #   run: |
-    #     pwd
-    #     echo ${GOPATH}
-    #     echo ${GOROOT}
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-      with:
-        path: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
-    # - name: Debug
+  #   # - name: Debug
+  #   #   run: |
+  #   #     pwd
+  #   #     echo ${GOPATH}
+  #   #     echo ${GOROOT}
+  #   - name: Check out code into the Go module directory
+  #     uses: actions/checkout@v2
+  #     with:
+  #       path: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
+  #   # - name: Debug
     #   run: |
     #     pwd
     #     echo ${HOME}
@@ -49,12 +62,12 @@ jobs:
     #     GOPATH: /home/runner/work/belee/belee
     #     GOROOT: /opt/hostedtoolcache/go/1.17.1/x64/src/belee
     
-    - name: running unit test
-      run: |
-        cd ./go/src/github.com/diahfani/belee/controllers
-        go mod init belee
-        go mod tidy
-        go test ./... -cover
+    # - name: running unit test
+    #   run: |
+    #     cd ./go/src/github.com/diahfani/belee/controllers
+    #     go mod init belee
+    #     go mod tidy
+        # go test ./... -cover
     # - uses: actions/checkout@v2
     #   uses: actions/setup-go@v2
     #   with:
