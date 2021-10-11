@@ -12,8 +12,6 @@ on:
       - 'master'
 
 jobs:
-
-jobs:
   unit-test:
     name: "unit test"
     runs-on: ubuntu-latest
