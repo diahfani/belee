@@ -23,13 +23,15 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.go-version }}
-    - name: test go-path
-      env:
-        GOPATH: ${{ github.workspace }}
-        GO111MODULE: off
-      defaults:
-        run:
-          working-directory: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
+
+  test-gopath:
+    env:
+      GOPATH: ${{ github.workspace }}
+      GO111MODULE: off
+    defaults:
+      run:
+        working-directory: ${{ env.GOPATH }}/src/github.com/${{ github.repository }}
+    steps:
     - name: checkout code
       uses: actions/checkout@v2
       with:
