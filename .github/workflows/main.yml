@@ -22,7 +22,10 @@ jobs:
       with:
         go-version: 1.16
     - name: running unit test
-      run: go test ./... -cover
+      run: |
+      go mod init belee
+      go mod tidy
+      go test ./... -cover
   # unit-test:
   #   name: "do unit testing"
   #   runs-on: ubuntu-latest
