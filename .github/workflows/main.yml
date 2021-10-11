@@ -23,7 +23,6 @@ jobs:
         go-version: 1.16
     - name: running unit test
       run: |
-        go mod init belee
         go mod tidy
         go test ./... -cover
   # unit-test:
