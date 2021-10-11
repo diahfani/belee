@@ -25,6 +25,8 @@ jobs:
       run: |
         go mod tidy
         go test ./... -cover
+      env:
+        GO111MODULE: auto
   # unit-test:
   #   name: "do unit testing"
   #   runs-on: ubuntu-latest
