@@ -199,7 +199,7 @@ func TestRegisterOwnersFailedEmptyAddress(t *testing.T) {
 
 func TestRegisterOwnersFailedEmailDuplicate(t *testing.T) {
 	e := InitEchoTestApi()
-	InsertDataOwners()
+	// InsertDataOwners()
 
 	requestBody := strings.NewReader(`{
 		"name":"diah aufa",
@@ -207,8 +207,8 @@ func TestRegisterOwnersFailedEmailDuplicate(t *testing.T) {
 		"nohp":"085890703579",
 		"dob":"2000-10-01",
 		"address":"bekasi",
-		"email":"fani@aol.com",
-		"password":"fani110"
+		"email":"jessi@aol.com",
+		"password":"jessi123"
 	}`)
 	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
