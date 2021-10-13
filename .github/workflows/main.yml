@@ -154,7 +154,7 @@ jobs:
             StrictHostKeyChecking=no
           END
       - name: Connect EC2 & Remove All Container & Pull from registry & start
-        run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull 2010010700/belee:1.0.0 && docker run -d -p 8080:8080'
+        run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull 2010010700/belee:1.0.0 && docker run -d -p 8080:8080 --name belee_api 2010010700/belee:1.0.0'
 
 
 
