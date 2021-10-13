@@ -303,13 +303,13 @@ func TestLoginBuyersFailedByEmail(t *testing.T) {
 	c := e.NewContext(request, recorder)
 	if assert.NoError(t, LoginController(c)) {
 		response := recorder.Result()
-		assert.Equal(t, 500, response.StatusCode)
+		assert.Equal(t, 403, response.StatusCode)
 		body, _ := io.ReadAll(response.Body)
 		var responseBody map[string]interface{}
 		json.Unmarshal(body, &responseBody)
 
-		assert.Equal(t, 500, int(responseBody["code"].(float64)))
-		assert.Equal(t, "There's error in server", responseBody["message"])
+		assert.Equal(t, 403, int(responseBody["code"].(float64)))
+		assert.Equal(t, "User not found", responseBody["message"])
 
 	}
 }

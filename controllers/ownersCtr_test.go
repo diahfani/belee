@@ -38,10 +38,10 @@ func TestRegisterOwnerSuccess(t *testing.T) {
 		"nohp":"085890703579",
 		"dob":"2000-10-01",
 		"address":"bekasi",
-		"email":"diahfani@aol.com",
+		"email":"digiagah@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -66,10 +66,10 @@ func TestRegisterOwnerFailedEmptyName(t *testing.T) {
 		"nohp":"085890703579",
 		"dob":"2000-10-01",
 		"address":"bekasi",
-		"email":"diahfani@aol.com",
+		"email":"digiagah@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -94,10 +94,10 @@ func TestRegisterOwnerFailedEmptyAge(t *testing.T) {
 		"nohp":"085890703579",
 		"dob":"2000-10-01",
 		"address":"bekasi",
-		"email":"diahfani@aol.com",
+		"email":"digiagah@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -122,10 +122,10 @@ func TestRegisterOwnersFailedEmptyNohp(t *testing.T) {
 		"nohp":"",
 		"dob":"2000-10-01",
 		"address":"bekasi",
-		"email":"diahfani@aol.com",
+		"email":"digiagah@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -150,10 +150,10 @@ func TestRegisterOwnersFailedEmptyDob(t *testing.T) {
 		"nohp":"085890703579",
 		"dob":"",
 		"address":"bekasi",
-		"email":"diahfani@aol.com",
+		"email":"digiagah@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -178,10 +178,10 @@ func TestRegisterOwnersFailedEmptyAddress(t *testing.T) {
 		"nohp":"085890703579",
 		"dob":"2000-10-01",
 		"address":"",
-		"email":"diahfani@aol.com",
+		"email":"digiagah@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -210,7 +210,7 @@ func TestRegisterOwnersFailedEmailDuplicate(t *testing.T) {
 		"email":"fani@aol.com",
 		"password":"fani110"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -238,7 +238,7 @@ func TestRegisterOwnersFailedEmailEmpty(t *testing.T) {
 		"email":"",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/owners/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -263,10 +263,10 @@ func TestRegisterOwnersFailedEmptyPassword(t *testing.T) {
 		"nohp":"085890703579",
 		"dob":"2000-10-01",
 		"address":"bekasi",
-		"email":"diahfani@aol.com",
+		"email":"digiagah@aol.com",
 		"password":""
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyer/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/owners/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
