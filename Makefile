@@ -17,4 +17,4 @@ build:
 	$(GOBUILD) -o $(BINARY_NAME) -v
 
 lint:
-	$(LINTER) -v run
+	$(LINTER) run
