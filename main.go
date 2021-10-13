@@ -9,6 +9,6 @@ import (
 func main() {
 	config.DbConfig()
 	e := routes.NewRoutes()
-	e.Start(":8080")
+	e.Start("3.144.166.87:8080")
 
 }

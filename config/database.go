@@ -43,7 +43,7 @@ func Migration() {
 }
 
 func InitDBTest() {
-	dsn := "root:diahaufa123@tcp(db-belee.cxinhvzfptwa.us-east-2.rds.amazonaws.com:3306)/belee_testing?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "admin0110:admin0110@tcp(db-belee.cxinhvzfptwa.us-east-2.rds.amazonaws.com:3306)/belee_testing?charset=utf8mb4&parseTime=True&loc=Local"
 	var err error
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
