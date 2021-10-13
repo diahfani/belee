@@ -8,4 +8,4 @@ before install:
 
 
 script:
-  - make lint test
+  - go test ./controllers -timeout 30m
