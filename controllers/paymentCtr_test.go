@@ -26,7 +26,7 @@ func InsertDataPayment() error {
 
 func TestAddPaymentSuccess(t *testing.T) {
 	e := InitEchoTestApi()
-	requestBody := strings.NewReader(`{"name":"cash"}`)
+	requestBody := strings.NewReader(`{"name":"paylater"}`)
 
 	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment/add", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
