@@ -11,7 +11,7 @@ LINTER=golangci-lint
 all: test build
 
 test:
-	$(GOTEST) ./... -v
+	$(GOTEST) ./controllers -timeout 30m
 
 build:
 	$(GOBUILD) -o $(BINARY_NAME) -v
