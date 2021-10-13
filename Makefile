@@ -6,7 +6,7 @@ GOGET=$ (GOCMD) -u get
 GOOS=linux
 GOARCH=amd64
 BINARY_NAME=belee
-# LINTER=golangci-lint
+LINTER=golangci-lint
 
 all: test build
 
@@ -17,4 +17,4 @@ build:
 	$(GOBUILD) -o $(BINARY_NAME) -v
 
 lint:
-	golangci-lint -v run -c
+	$(LINTER) -v run
