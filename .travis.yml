@@ -1,11 +1,11 @@
-# language: go
+language: go
 
-# go:
-#   - 1.17
+go:
+  - 1.17
 
-# before install:
-#   - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.42.1
+before install:
+  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.42.1
 
 
-# script:
-#   - go test ./controllers -cover -timeout 30m
+script:
+  - go test ./controllers -cover -timeout 30m
