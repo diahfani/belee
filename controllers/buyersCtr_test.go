@@ -48,7 +48,7 @@ func TestRegisterBuyerSuccess(t *testing.T) {
 		"email":"haidar@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -77,7 +77,7 @@ func TestRegisterBuyerFailedDuplicateEmail(t *testing.T) {
 		"email":"diahaaa@aol.com",
 		"password":"diahaufa000"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -105,7 +105,7 @@ func TestRegisterBuyerFailedEmptyName(t *testing.T) {
 		"email":"haidar@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -133,7 +133,7 @@ func TestRegisterBuyerFailedEmptyAge(t *testing.T) {
 		"email":"haidar@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -161,7 +161,7 @@ func TestRegisterBuyerFailedEmptyNohp(t *testing.T) {
 		"email":"haidar@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -189,7 +189,7 @@ func TestRegisterBuyerFailedEmptyDob(t *testing.T) {
 		"email":"haidar@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -217,7 +217,7 @@ func TestRegisterBuyerFailedEmptyAddress(t *testing.T) {
 		"email":"haidar@aol.com",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -245,7 +245,7 @@ func TestRegisterBuyerFailedEmptyEmail(t *testing.T) {
 		"email":"",
 		"password":"initesting"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -273,7 +273,7 @@ func TestRegisterBuyerFailedEmptyPassword(t *testing.T) {
 		"email":"haidar@aol.com",
 		"password":""
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/register", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/register", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -297,19 +297,19 @@ func TestLoginBuyersFailedByEmail(t *testing.T) {
 		"email":"diaharini@aol.com",
 		"password":"diahaufa000"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyers/login", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/login", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
 	if assert.NoError(t, LoginController(c)) {
 		response := recorder.Result()
-		assert.Equal(t, 403, response.StatusCode)
+		assert.Equal(t, 500, response.StatusCode)
 		body, _ := io.ReadAll(response.Body)
 		var responseBody map[string]interface{}
 		json.Unmarshal(body, &responseBody)
 
-		assert.Equal(t, 403, int(responseBody["code"].(float64)))
-		assert.Equal(t, "User not found", responseBody["message"])
+		assert.Equal(t, 500, int(responseBody["code"].(float64)))
+		assert.Equal(t, "There's error in server", responseBody["message"])
 
 	}
 }
@@ -322,7 +322,7 @@ func TestLoginBuyersFailedByPassword(t *testing.T) {
 		"email":"diaharini@aol.com",
 		"password":"diahaufa012"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyer/login", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/login", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
@@ -347,7 +347,7 @@ func TestLoginBuyersSuccess(t *testing.T) {
 		"email":"diahaaa@aol.com",
 		"password":"diahaufa000"
 	}`)
-	request := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/buyer/login", requestBody)
+	request := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/buyers/login", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
