@@ -54,7 +54,7 @@ func InitDBTest() {
 }
 
 func MigrationTest() {
-	DB.Migrator().DropTable(&buyer.Buyers{})
+	// DB.Migrator().DropTable(&buyer.Buyers{})
 	DB.AutoMigrate(&buyer.Buyers{})
 	DB.Migrator().DropTable(&owner.Owners{})
 	DB.AutoMigrate(&owner.Owners{})
