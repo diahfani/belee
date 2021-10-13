@@ -62,7 +62,7 @@ func TestAddProductsSuccess(t *testing.T) {
 		"qty":"30",
 		"price":"1500"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/products/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/products", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -90,7 +90,7 @@ func TestAddProductsFailedEmptyName(t *testing.T) {
 		"qty":"30",
 		"price":"1500"
 		}`)
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:8000/api/v1/products", requestBody)
+	req := httptest.NewRequest(http.MethodGet, "http://3.144.166.87:8080/api/v1/products", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -121,7 +121,7 @@ func TestUpdateProductsFailedParam(t *testing.T) {
 		"qty":"30",
 		"price":"1500"
 		}`)
-	req := httptest.NewRequest(http.MethodPut, "http://localhost:8000/api/v1/products/update/", requestBody)
+	req := httptest.NewRequest(http.MethodPut, "http://3.144.166.87:8080/api/v1/products/update/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -151,7 +151,7 @@ func TestGetProductsSuccess(t *testing.T) {
 	// app := echo.New()
 	requestBody := strings.NewReader(`{
 		"name":"lada bubuk"`)
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:8000/api/v1/products/", requestBody)
+	req := httptest.NewRequest(http.MethodGet, "http://3.144.166.87:8080/api/v1/products/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -181,7 +181,7 @@ func TestGetProductsFailedParam(t *testing.T) {
 	// app := echo.New()
 	requestBody := strings.NewReader(`{
 		"name":"garam"`)
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:8000/api/v1/products/", requestBody)
+	req := httptest.NewRequest(http.MethodGet, "http://3.144.166.87:8080/api/v1/products/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -246,7 +246,7 @@ func TestDeleteProductsFailedParam(t *testing.T) {
 		"qty":"30",
 		"price":"1500"
 		}`)
-	req := httptest.NewRequest(http.MethodPut, "http://localhost:8000/api/v1/products/delete/", requestBody)
+	req := httptest.NewRequest(http.MethodPut, "http://3.144.166.87:8080/api/v1/products/delete/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
