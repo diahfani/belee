@@ -22,7 +22,7 @@ jobs:
       with:
         go-version: 1.16
     - name: running unit test
-      run: go test ./controllers -timeout 30m
+      run: go test ./controllers -cover -timeout 30m
 
       # defaults:
       #   run: 

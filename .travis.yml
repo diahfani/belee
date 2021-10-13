@@ -8,4 +8,4 @@ before install:
 
 
 script:
-  - go test ./controllers -timeout 30m
+  - go test ./controllers -cover -timeout 30m
