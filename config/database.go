@@ -55,18 +55,17 @@ func InitDBTest() {
 
 func MigrationTest() {
 	DB.Migrator().DropTable(&buyer.Buyers{})
-	DB.Migrator().DropTable(&owner.Owners{})
-	DB.Migrator().DropTable(&warung.Warungs{})
-	DB.Migrator().DropTable(&paymentMethod.PaymentMethods{})
-	DB.Migrator().DropTable(&products.Products{})
-	DB.Migrator().DropTable(&productsType.ProductsType{})
-	DB.Migrator().DropTable(&transactions.Transactions{})
-
 	DB.AutoMigrate(&buyer.Buyers{})
+	DB.Migrator().DropTable(&owner.Owners{})
 	DB.AutoMigrate(&owner.Owners{})
+	DB.Migrator().DropTable(&warung.Warungs{})
 	DB.AutoMigrate(&warung.Warungs{})
+	DB.Migrator().DropTable(&paymentMethod.PaymentMethods{})
 	DB.AutoMigrate(&paymentMethod.PaymentMethods{})
+	DB.Migrator().DropTable(&products.Products{})
 	DB.AutoMigrate(&products.Products{})
+	DB.Migrator().DropTable(&productsType.ProductsType{})
 	DB.AutoMigrate(&productsType.ProductsType{})
+	DB.Migrator().DropTable(&transactions.Transactions{})
 	DB.AutoMigrate(&transactions.Transactions{})
 }

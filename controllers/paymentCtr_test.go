@@ -15,7 +15,7 @@ import (
 
 func InsertDataPayment() error {
 	payment := paymentMethod.PaymentMethods{
-		Name: "cash",
+		Name: "ovo",
 	}
 	var err error
 	if err = config.DB.Save(&payment).Error; err != nil {
@@ -28,7 +28,7 @@ func TestAddPaymentSuccess(t *testing.T) {
 	e := InitEchoTestApi()
 	requestBody := strings.NewReader(`{"name":"paylater"}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/payment", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -50,7 +50,7 @@ func TestAddPaymentFailedEmptyName(t *testing.T) {
 	e := InitEchoTestApi()
 	requestBody := strings.NewReader(`{"name":""}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/payment", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -71,9 +71,9 @@ func TestAddPaymentFailedEmptyName(t *testing.T) {
 func TestAddPaymentFailedDuplicateName(t *testing.T) {
 	e := InitEchoTestApi()
 	InsertDataPayment()
-	requestBody := strings.NewReader(`{"name":"cash"}`)
+	requestBody := strings.NewReader(`{"name":"ovo"}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/payment/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/payment", requestBody)
 	// requestBody := strings.NewReader(`{"name":""}`)
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()

@@ -43,7 +43,7 @@ func TestAddTransactionSuccess(t *testing.T) {
 		"totalqty":"2",
 		"totalprice":"3000"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/transactions/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/transactions", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -73,7 +73,7 @@ func TestAddTransactionFailedEmptyName(t *testing.T) {
 		"totalqty":"2",
 		"totalprice":"3000"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/transactions/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/transactions", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -96,7 +96,7 @@ func TestGetTransactionFailedParamError(t *testing.T) {
 	InsertDataProducts()
 	requestBody := strings.NewReader(`{
 		"id":"1"}`)
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:8000/api/v1/transactions/", requestBody)
+	req := httptest.NewRequest(http.MethodGet, "http://3.144.166.87:8080/api/v1/transactions/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -119,7 +119,7 @@ func TestDeleteTransactionFailedParamError(t *testing.T) {
 	InsertDataProducts()
 	requestBody := strings.NewReader(`{
 		"id":"1"}`)
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:8000/api/v1/transactions/", requestBody)
+	req := httptest.NewRequest(http.MethodGet, "http://3.144.166.87:8080/api/v1/transactions/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()

@@ -35,7 +35,7 @@ func TestAddWarungSuccess(t *testing.T) {
 		"name":"toko hamida",
 		"address":"jakarta"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/warungs", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/warungs", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -61,7 +61,7 @@ func TestAddWarungFailedEmptyName(t *testing.T) {
 		"name":"",
 		"address":"jakarta"
 		}`)
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:8000/api/v1/warungs/add", requestBody)
+	req := httptest.NewRequest(http.MethodPost, "http://3.144.166.87:8080/api/v1/warungs", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -87,7 +87,7 @@ func TestUpdateWarungFailedEmptyParam(t *testing.T) {
 		"name":"",
 		"address":"jakarta"
 		}`)
-	req := httptest.NewRequest(http.MethodPut, "http://localhost:8000/api/v1/warungs/update/", requestBody)
+	req := httptest.NewRequest(http.MethodPut, "http://3.144.166.87:8080/api/v1/warungs/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -113,7 +113,7 @@ func TestDeleteWarungFailedEmptyParam(t *testing.T) {
 		"name":"",
 		"address":"jakarta"
 		}`)
-	req := httptest.NewRequest(http.MethodDelete, "http://localhost:8000/api/v1/warungs/delete/", requestBody)
+	req := httptest.NewRequest(http.MethodDelete, "http://3.144.166.87:8080/api/v1/warungs/", requestBody)
 
 	req.Header.Add("Content-Type", "application/json")
 	record := httptest.NewRecorder()
@@ -138,7 +138,7 @@ func TestGetWarungFailed(t *testing.T) {
 	// requestBody := strings.NewReader(`{
 	// 	"warungId":"1"
 	// }`)
-	request := httptest.NewRequest(http.MethodGet, "http://localhost:8000/api/v1", nil)
+	request := httptest.NewRequest(http.MethodGet, "http://3.144.166.87:8080/api/v1/warungs", nil)
 	request.Header.Add("Content-Type", "application/json")
 	recorder := httptest.NewRecorder()
 	c := e.NewContext(request, recorder)
