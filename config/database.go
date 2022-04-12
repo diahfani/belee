@@ -32,14 +32,6 @@ func Migration() {
 	DB.AutoMigrate(&buyer.Buyers{}, &owner.Owners{}, &warung.Warungs{}, &paymentMethod.PaymentMethods{}, &products.Products{}, &productsType.ProductsType{})
 
 	DB.AutoMigrate(&transactions.Transactions{})
-	// DB.Migrator().RenameColumn(&transactions.Transactions{}, "products_name", "productsname")
-	// DB.Migrator().RenameColumn(&transactions.Transactions{}, "total_qty", "totalqty")
-	// DB.Migrator().RenameColumn(&transactions.Transactions{}, "total_price", "totalprice")
-	// DB.Migrator().DropColumn(&warung.Warungs{}, "owners_id")
-	// DB.Migrator().DropColumn(&products.Products{}, "warung_id")
-	// DB.Migrator().DropColumn(&products.Products{}, "barang_type_id")
-	// DB.Migrator().DropColumn(&transactions.Transactions{}, "barang_id")
-	// DB.AutoMigrate()
 }
 
 func InitDBTest() {
